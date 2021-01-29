@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+*.iml
+/vendor/
+/build/
+node_modules/
+/.php_cs.cache
+/tests/FrontEnd/e2e/screenshots
+/tests/FrontEnd/e2e/videos
+sftp.json
