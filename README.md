@@ -29,4 +29,4 @@ The api file is generated at the root of the project as vtramit-api.yml
 
 #### INSTALL
 
-Check (INSTALL.md)
+Check [INSTALL](INSTALL.md)
