@@ -1,6 +1,10 @@
 # VTramit
 
-Nextcloud App for administrative proceedings with public administrations through Videoconferences
+Nextcloud App for administrative proceedings with public administrations through Videoconferences.
+
+This APP has been developed by [FLOSS](https://floss.cat) for [Barcelona City Council](https://ajuntament.barcelona.cat) under AGPL v3 license.
+
+
 
 ## Development setup
 ### Install from git
@@ -22,3 +26,7 @@ To generate the file execute:
 ```
 
 The api file is generated at the root of the project as vtramit-api.yml
+
+#### INSTALL
+
+Check (INSTALL.md)
