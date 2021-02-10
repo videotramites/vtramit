@@ -385,7 +385,11 @@ class AppointmentService {
         $found = $this->mapper->findByExternalId($externalId);
         foreach($found as $potential_duplicated) {
             if ($potential_duplicated->getExternalId() == $externalId && $potential_duplicated->getCitizenId() == $citizenId) {
-                if ($potential_duplicated->getState() == Appointment::STATE_COMPLETED || $potential_duplicated->getState() == Appointment::STATE_CANCELLED) {
+                if ($potential_duplicated->getState() == Appointment::STATE_COMPLETED
+                 || $potential_duplicated->getState() == Appointment::STATE_CANCELLED
+                 || $potential_duplicated->getState() == Appointment::STATE_DUPLICATED
+                 || $potential_duplicated->getState() == Appointment::STATE_EXPIRED
+                ) {
                     return $potential_duplicated;
                 }
 
@@ -483,6 +487,44 @@ class AppointmentService {
      * @return array                information about result status and message status
      */
     public function cancelAppointment($appointment, $userId) {
+        return $this->doCancelAppointment($note, $userId, Appointment::STATE_CANCELLED);
+    }
+
+    /**
+     * Cancel and anonymize a duplicated appointment. Cancellation is done if current
+     * state if one of initializing, created, pendant or on course.
+     *
+     * If any mail is in queue to be sent, it is removed from the queue.
+     *
+     * It is compatible with appointments not registered in database, but that
+     * have folders either created. Folders removal are always done, independently
+     * of the current appointment state.
+     *
+     * @param Entity|Appointment  $appointment    appointment to cancel
+     * @param int          $userId  identifier of user executing the operation
+     * @return array                information about result status and message status
+     */
+    public function cancelDuplicatedAppointment($Appointment, $userId, $isDuplicated) {
+        return $this->doCancelAppointment($note, $userId, Appointment::STATE_DUPLICATED);
+    }
+
+    /**
+     * Cancel and anonymize an appointment. Cancellation is done if current
+     * state if one of initializing, created, pendant or on course.
+     *
+     * If any mail is in queue to be sent, it is removed from the queue.
+     *
+     * It is compatible with appointments not registered in database, but that
+     * have folders either created. Folders removal are always done, independently
+     * of the current appointment state.
+     *
+     * @param Entity|Appointment  $appointment    appointment to cancel
+     * @param int          $userId  identifier of user executing the operation
+     * @param int          $newState  the new state; should be Appointment::STATE_CANCELLED or Appointment::STATE_DUPLICATED
+     * @return array                information about result status and message status
+     */
+    private function doCancelAppointment($note, $userId, $newState) {
+
         // We need to keep cancellable state from the beginning as after first
         // step the state will be changed and anoymization would never be produced
         $cancellable = $appointment->allowStateCancelled();
@@ -617,6 +659,11 @@ class AppointmentService {
             // a different treatment
             case Appointment::STATE_CANCELLED:
                 return $this->cancelAppointment($appointment, $userId);
+            
+            // Cancellation of duplicates has a more complex treatment and requires
+            // a different treatment
+            case Appointment::STATE_DUPLICATED:
+                return $this->cancelDuplicatedAppointment($appointment, $userId);
 
             case Appointment::STATE_INITIALIZING:
                 $allowUpdate = $appointment->allowStateInitializing();
@@ -686,7 +733,7 @@ class AppointmentService {
 
             // Cancel old appointments not done
             if (in_array($appointment->getState(), $toCancel)) {
-                $appointment->setState(Appointment::STATE_CANCELLED);
+                $appointment->setState(Appointment::STATE_EXPIRED);
                 $this->mapper->update($appointment);
             }
 
@@ -1279,6 +1326,12 @@ class AppointmentService {
                 break;
             case Appointment::STATE_CANCELLED:
                 $appointment->setStateDesc($this->translate->t('Cancelled'));
+                break;
+            case Appointment::STATE_DUPLICATED:
+                $appointment->setStateDesc($this->translate->t('Duplicated'));
+                break;
+            case Appointment::STATE_EXPIRED:
+                $appointment->setStateDesc($this->translate->t('Expired'));
                 break;
         }
 

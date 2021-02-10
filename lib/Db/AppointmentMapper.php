@@ -277,7 +277,10 @@ class AppointmentMapper extends QBMapper {
         $found_appointments = $this->findByExternalId($externalId);
         foreach($found_appointments as $appointment) {
             if (empty($excludedAppointments) || !in_array($appointment->getId(), $excludedAppointments) ) {
-                if ($appointment->getState() != Appointment::STATE_CANCELLED) {
+                if ($appointment->getState() != Appointment::STATE_CANCELLED 
+                 && $appointment->getState() != Appointment::STATE_DUPLICATED
+                 && $appointment->getState() != Appointment::STATE_EXPIRED
+                ) {
                     $appointment->setState(Appointment::STATE_CANCELLED);
                     $this->update($appointment);
                     $cancelled[] = $appointment;

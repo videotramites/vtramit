@@ -63,11 +63,13 @@ class Appointment extends Entity implements JsonSerializable {
 
     public const STATE_INITIALIZING = 0;
     public const STATE_CREATED      = 1;
-    public const STATE_PENDANT         = 2;
+    public const STATE_PENDANT      = 2;
     public const STATE_ON_COURSE    = 3;
     public const STATE_FINISHED     = 4;
     public const STATE_COMPLETED    = 5;
     public const STATE_CANCELLED    = 6;
+    public const STATE_DUPLICATED   = 7;
+    public const STATE_EXPIRED      = 8;
 
     /**
      * Specify data which should be serialized to JSON

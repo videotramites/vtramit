@@ -38,6 +38,8 @@ OC.L10N.register(
         "Finished" : "Finalizada",
         "Completed" : "Completada",
         "Cancelled" : "Cancelada",
+        "Duplicated" : "Duplicada",
+        "Expired" : "Expirada",
         "Videconference": "Videoconferencia",
         "Appointment form": "Codifica la cita",
         "Filter by id": "Filtrar por cita",

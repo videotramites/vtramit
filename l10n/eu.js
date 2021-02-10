@@ -38,6 +38,8 @@ OC.L10N.register(
         "Finished" : "Amaitua",
         "Completed" : "Burutua",
         "Cancelled" : "Ezeztatua",
+        "Duplicated" : "Bikoiztua",
+        "Expired" : "Iraungita",
         "Videconference": "Bideokonferentzia",
         "Appointment form": "Kodetu hitzordu",
         "Filter by id": "Hitzordu arabera iragazi",

@@ -1,7 +1,7 @@
 <!--
 /**
  * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
+ *
  * @author Daniel Tamajon <daniel@floss.cat>
  * @author Kenneth Peiruza <kenneth@floss.cat>
  * @author Letizia Benítez <letizia@floss.cat>
@@ -502,7 +502,7 @@ export default {
 			showFilters: false,
 			tags: [t('vtramit', 'Initializing'), t('vtramit', 'Created'), t('vtramit', 'Pendant'), t('vtramit', 'On course'), t('vtramit', 'Finished'), t('vtramit', 'Completed'), t('vtramit', 'Cancelled')],
 			states: [ { 'value': 0, 'name': t('vtramit', 'Initializing') }, { 'value': 1, 'name': t('vtramit', 'Created') }, { 'value': 2, 'name': t('vtramit', 'Pendant') }, { 'value': 3, 'name': t('vtramit', 'On course') }, { 'value': 4, 'name': t('vtramit', 'Finished') }, { 'value': 5, 'name': t('vtramit', 'Completed') }, { 'value': 6, 'name': t('vtramit', 'Cancelled') } ],
-			constants: { 'STATE_INITIALIZING': 0, 'STATE_CREATED': 1, 'STATE_PENDANT': 2, 'STATE_ON_COURSE': 3, 'STATE_FINISHED': 4, 'STATE_COMPLETED': 5, 'STATE_CANCELLED': 6 },
+			constants: { 'STATE_INITIALIZING': 0, 'STATE_CREATED': 1, 'STATE_PENDANT': 2, 'STATE_ON_COURSE': 3, 'STATE_FINISHED': 4, 'STATE_COMPLETED': 5, 'STATE_CANCELLED': 6, 'STATE_DUPLICATED': 7, 'STATE_EXPIRED': 8 },
 			due: [t('vtramit', 'Avui'), t('vtramit', '48h'), t('vtramit', 'This week')],
 			departments: [],
 			userContext: [],

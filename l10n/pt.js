@@ -37,6 +37,8 @@ OC.L10N.register(
         "Finished" : "Finalizado",
         "Completed" : "Completado",
         "Cancelled" : "Cancelado",
+        "Duplicated" : "Duplicado",
+        "Expired" : "Expirado",
         "Videconference": "Videoconferência",
         "Appointment form": "Codificar o agendamento",
         "Filter by id": "Pesquisar por agendamento",
