@@ -291,7 +291,7 @@ class AppointmentApiController extends ApiController {
      * @return array             information about result status and message status
      */
     public function updateStateToCancelledByExternalId(string $externalId): DataResponse {
-        $data = $this->service->cancelAppointmentByExternalId($externalId);
+        $data = $this->service->cancelAppointmentByExternalId($externalId, $this->userId);
         return new DataResponse($data, HTTP::STATUS_OK);
     }
 

@@ -546,9 +546,11 @@ class AppointmentService {
      * @return array              information about result status and message status
      */
     public function cancelAppointmentByExternalId($externalId, $userId) {
-        $appointment = $this->mapper->findByExternalId($externalId);
-        if (!empty($appointment)) {
-            return $this->cancelAppointment($appointment, $userId);
+        $appointments = $this->mapper->findByExternalId($externalId);
+        if (!empty($appointments)) {
+            foreach($appointments as $appointment) {
+                return $this->cancelAppointment($appointment, $userId);
+            }
         }
 
         return [
