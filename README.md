@@ -52,7 +52,12 @@ This is an ongoing project, check the [TODO](doc/TODO.md) list and the [ROADMAP]
 
 In order to ease testing and for security reasons, we're only going to support up to date versions of Nextcloud. Please, upgrade regularly!
 
-
 ## INSTALL
 
 Check [INSTALL](doc/INSTALL.md)
+
+
+## CONTRIBUTORS
+
+[List of Contributors](doc/CONTRIBUTORS.md)
+
