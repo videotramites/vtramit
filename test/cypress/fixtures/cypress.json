@@ -1,0 +1,7 @@
+{
+  "route": "http://localhost:8180",
+  "user": "imh-01",
+  "password": "CHANGEME",
+  "admin": "admin",
+  "password_admin": "CHANGEME"
+}

@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -27,17 +27,19 @@
 
 namespace OCA\VTramit\Db;
 
+use DateTimeImmutable;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\QBMapper;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
+use OCA\VTramit\Db\Tables;
+
 class VideoconferenceMapper extends QBMapper {
-    private const TABLE = 'vtramit_videoconference';
 
     public function __construct(IDBConnection $db) {
-        parent::__construct($db, self::TABLE, Videoconference::class);
+        parent::__construct($db, Tables::VIDEOCONFERENCE, Videoconference::class);
     }
 
     /**
@@ -46,13 +48,13 @@ class VideoconferenceMapper extends QBMapper {
      * @param int $id                  videoconference id
      * @return Entity|Videoconference  entity found
      * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
-     * @throws DoesNotExistException
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
      */
     public function find(int $id): Videoconference {
         /* @var $qb IQueryBuilder */
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
-            ->from(self::TABLE)
+            ->from($this->getTablename())
             ->where($qb->expr()->eq('id', $qb->createNamedParameter($id, IQueryBuilder::PARAM_INT)));
 
         return $this->findEntity($qb);
@@ -67,43 +69,64 @@ class VideoconferenceMapper extends QBMapper {
         /* @var $qb IQueryBuilder */
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
-            ->from(self::TABLE);
+            ->from($this->getTablename());
 
         return $this->findEntities($qb);
     }
 
     /**
-     * Get all the videoconference notifications related to given appointment.
+     * Get all the videoconference notifications related to given procedure.
      *
-     * @param int $appointmentId  identifier of the related appointment
-     * @return array              list of entities found
+     * @param int $procedureId  identifier of the related procedure
+     * @return array            list of entities found
      */
-    public function findByAppointmentId(int $appointmentId): array {
+    public function findByProcedureId(int $procedureId): array {
         /* @var $qb IQueryBuilder */
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
-            ->from(self::TABLE)
-            ->where($qb->expr()->eq('appointment_id', $qb->createNamedParameter($appointmentId, IQueryBuilder::PARAM_INT)));
+            ->from($this->getTablename())
+            ->where($qb->expr()->eq('procedure_id', $qb->createNamedParameter($procedureId, IQueryBuilder::PARAM_INT)));
 
         return $this->findEntities($qb);
     }
 
     /**
-     * Get the last videoconference notification related to given appointment.
+     * Get the last videoconference notification related to given procedure.
      *
-     * @param int $appointmentId       identifier of the related appointment
+     * @param int $procedureId         identifier of the related procedure
      * @return Entity|Videoconference  entity found
-     * @throws DoesNotExistException
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
      */
-    public function findLastByAppointmentId(int $appointmentId): Videoconference {
+    public function findLastByProcedureId(int $procedureId): Videoconference {
         /* @var $qb IQueryBuilder */
         $qb = $this->db->getQueryBuilder();
         $qb->select('*')
-            ->from(self::TABLE)
-            ->where($qb->expr()->eq('appointment_id', $qb->createNamedParameter($appointmentId, IQueryBuilder::PARAM_INT)))
+            ->from($this->getTablename())
+            ->where($qb->expr()->eq('procedure_id', $qb->createNamedParameter($procedureId, IQueryBuilder::PARAM_INT)))
             ->orderBy('last_connection', 'DESC')
             ->setMaxResults(1);
 
         return $this->findEntity($qb);
+    }
+
+    /**
+     * Get videoconferences connected for procedures.
+     *
+     * @return array  entities found
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
+     */
+    public function findConnectedProcedures($timezone): array {
+        $now = new \DateTime("now", $timezone);
+        $now->modify("-10 second");
+
+        /* @var $qb IQueryBuilder */
+        $qb = $this->db->getQueryBuilder();
+        $qb->select('*')
+            ->from($this->getTablename())
+            ->andWhere($qb->expr()->isNotNull('procedure_id'))
+            ->andWhere($qb->expr()->gte('last_connection', $qb->createNamedParameter($now->getTimestamp(), IQueryBuilder::PARAM_INT)))
+        ;
+
+        return $this->findEntities($qb);
     }
 }

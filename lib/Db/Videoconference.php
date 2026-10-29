@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -33,6 +33,7 @@ use OCP\AppFramework\Db\Entity;
 
 class Videoconference extends Entity implements JsonSerializable {
     protected $appointmentId;
+    protected $procedureId;
     protected $firstConnection;
     protected $lastConnection;
 
@@ -48,6 +49,7 @@ class Videoconference extends Entity implements JsonSerializable {
         return [
             'id'              => $this->id,
             'appointmentId'   => $this->appointmentId,
+            'procedureId'     => (int) $this->procedureId,
             'firstConnection' => $this->firstConnection,
             'lastConnection'  => $this->lastConnection
         ];
@@ -55,7 +57,7 @@ class Videoconference extends Entity implements JsonSerializable {
 
     /**
      * Indicates whether the non-moderator user is waiting for the moderator.
-     * It is considered that a user is waiting if there is less than 1 minute since last
+     * It is considered that a user is waiting if there is less than 10 seconds since last
      * alive notification.
      *
      * @return bool  true if the non-moderator is waiting for the moderator; otherwise, false

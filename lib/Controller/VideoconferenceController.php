@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -28,11 +28,13 @@
 namespace OCA\VTramit\Controller;
 
 use OCP\IRequest;
-use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 
-use OCA\VTramit\Service\VideoconferenceService;
 use OCA\VTramit\Db\Videoconference;
+use OCA\VTramit\Exception\ControllerErrors;
+use OCA\VTramit\Service\VideoconferenceService;
 
 class VideoconferenceController extends Controller {
     /** @var VideoconferenceService */
@@ -42,7 +44,7 @@ class VideoconferenceController extends Controller {
     private $userId;
 
 
-    use Errors;
+    use ControllerErrors;
 
     public function __construct(
         $appName,
@@ -58,11 +60,56 @@ class VideoconferenceController extends Controller {
 
     /**
      * By default, response is empty. We need something to filter.
-     *
-     * @NoAdminRequired
      */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
     public function index(): DataResponse {
         return new DataResponse([]);
     }
 
+    /**
+     * Manage the notification of waiting for videoconference. This notification
+     * must be sent by the videoconference system, like Jitsi.
+     *
+     * @OA\Post(
+     *     path="/web/2.0/procedure/videoconference/{jitsiRoomCode}/waiting",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Parameter(name="jitsiRoomCode", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response="200",
+     *         description="List of procedures awaiting to be attended by videoconference"
+     *     )
+     * )
+     *
+     * @param string $jitsiRoomCode  the room identifier
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\CORS]
+    public function procedureWaiting($jitsiRoomCode): DataResponse {
+        return $this->handleExceptions(function () use ($jitsiRoomCode) {
+            $response = $this->service->procedureConnectionNotified($jitsiRoomCode);
+            return new DataResponse($response->getData(), HTTP::STATUS_OK);
+        });
+    }
+
+    /**
+     * Get the list of procedures waiting to be attended.
+     *
+     * @OA\Get(
+     *     path="/web/2.0/procedure/videoconference/op/waiting",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Response(
+     *         response="200",
+     *         description="List of procedures awaiting to be attended by videoconference"
+     *     )
+     * )
+     *
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function waitingProcedures(): DataResponse {
+        return $this->handleExceptions(function () {
+            $response = $this->service->findConnectedProcedures();
+            return new DataResponse($response->getData(), HTTP::STATUS_OK);
+        });
+    }
 }

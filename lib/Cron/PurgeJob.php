@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <litesolutions.es>
+ * @author Marta González <litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -27,52 +27,42 @@
 
 namespace OCA\VTramit\Cron;
 
-use \OC\BackgroundJob\TimedJob;
-use \OCP\AppFramework\Db\DoesNotExistException;
-use \OCP\ILogger;
-
-use OCA\VTramit\Db\Appointment;
-use OCA\VTramit\Service\AppointmentService;
+use OCP\BackgroundJob\TimedJob;
+use OCP\AppFramework\Db\DoesNotExistException;
+use Psr\Log\LoggerInterface;
+use OCP\AppFramework\Utility\ITimeFactory; // Import ITimeFactory
+use OCA\VTramit\Service\ProcedureJobService;
 
 class PurgeJob extends TimedJob {
 
-    /** @var AppointmentService */
-    private $appointmentService;
-
-    /** @var ILogger */
-    private $logger;
-
-    public function __construct(AppointmentService $appointmentService, ILogger $logger) {
-        // Run once an hour
+    public function __construct(
+        ITimeFactory $time,
+        private ProcedureJobService $procedureJobService,
+        private LoggerInterface $logger,
+    ) {
+        parent::__construct($time);
+        // Run once per hour.
         $this->setInterval(60 * 60);
-
-        if (is_null($appointmentService) || is_null($logger)) {
-            $this->fixDIForJobs();
-        } else {
-            $this->appointmentService = $appointmentService;
-            $this->logger = $logger;
-        }
-    }
-
-    protected function fixDIForJobs() {
-        /** @var Application $application */
-        $application = \OC::$server->query(Application::class);
-        $this->userManager = \OC::$server->getUserManager();
-        $this->appointmentService = $application->getContainer()->query('AppointmentService');
-        $this->logger = $application->getContainer()->query('ILogger');
     }
 
     /**
-     * @param $argument
+     * @param array|null $argument
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function run($argument) {
-        try {
-            $this->appointmentService->purgeData();
+    public function run($argument = null) {
 
+        try {
+            // Run the service method to purge data
+            $this->procedureJobService->purgeData();
         } catch (DoesNotExistException $e) {
-            // Skip if any error occurs
-            $this->logger->debug('Could not purge data');
+            // Log debug information if data does not exist
+            $this->logger->debug('Could not purge procedure data', ['app' => 'vtramit']);
+        } catch (\Exception $e) {
+            // Handle general exceptions
+            $this->logger->error('An error occurred during purge data operation', ['exception' => $e, 'app' => 'vtramit']);
+        } catch (\Throwable $e) {
+            // Handle any other errors or PHP fatal errors
+            $this->logger->error('A critical error occurred during purge data operation', ['exception' => $e, 'app' => 'vtramit']);
         }
     }
 }

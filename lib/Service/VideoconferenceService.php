@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -28,69 +28,67 @@
 namespace OCA\VTramit\Service;
 
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\ILogger;
+use Psr\Log\LoggerInterface;
+use OCP\IL10N;
 
-use OCA\VTramit\Db\Appointment;
-use OCA\VTramit\Db\AppointmentMapper;
+use OCA\VTramit\ProcedureStatus;
+
+use OCA\VTramit\Db\Procedure;
+use OCA\VTramit\Db\ProcedureMapper;
+use OCA\VTramit\Db\ResponseInfo;
 use OCA\VTramit\Db\Videoconference;
 use OCA\VTramit\Db\VideoconferenceMapper;
 
+use OCA\VTramit\Service\ConfigService;
+
 class VideoconferenceService {
 
-    /** @var ILogger */
+    /** @var LoggerInterface */
     private $logger;
+
+    /** @var IL10N */
+    protected $translate;
 
     /** @var VideoconferenceMapper */
     private $videoconferenceMapper;
 
-    /** @var AppointmentMapper */
-    private $appointmentMapper;
+    /** @var ProcedureMapper */
+    private $procedureMapper;
+
+    /** @var ConfigService */
+    private $configService;
 
     public function __construct(
-        ILogger $logger,
+        LoggerInterface $logger,
+        IL10N $translate,
         VideoconferenceMapper $videoconferenceMapper,
-        AppointmentMapper $appointmentMapper
+        ProcedureMapper $procedureMapper,
+        ConfigService $configService
     ) {
         $this->logger = $logger;
+        $this->translate = $translate;
         $this->videoconferenceMapper = $videoconferenceMapper;
-        $this->appointmentMapper = $appointmentMapper;
+        $this->procedureMapper = $procedureMapper;
+        $this->configService = $configService;
     }
 
     /**
-     * Create a new videoconference notification for given appointment, setting
+     * Create a new videoconference notification for given procedure, setting
      * first and last connection to current time.
      *
-     * @param string $appointment_id   identifier of the appointment notified
+     * @param string $procedureId   identifier of the procedure notified
      * @return Entity|Videoconference  new videoconference notification entity
      */
-    protected function create(int $appointment_id) {
+    protected function create(int $procedureId) {
         $now = new \DateTime();
         $timestamp = $now->getTimestamp();
 
         $videoconference = new Videoconference();
-        $videoconference->setAppointmentId($appointment_id);
+        $videoconference->setProcedureId($procedureId);
         $videoconference->setFirstConnection($timestamp);
         $videoconference->setLastConnection($timestamp);
 
         return $this->videoconferenceMapper->insert($videoconference);
-    }
-
-    /**
-     * Update the videoconference notification for given appointment, setting
-     * last connection to current time.
-     *
-     * @param string $appointment_id   identifier of the appointment notified
-     * @return Entity|Videoconference  updated videoconference notification entity
-     * @throws DoesNotExistException
-     */
-    protected function update(int $appointment_id) {
-        $now = new \DateTime();
-        $timestamp = $now->getTimestamp();
-
-        $videoconference = $this->videoconferenceMapper->findLastByAppointmentId($appointment_id);
-        $videoconference->setLastConnection($timestamp);
-
-        return $this->videoconferenceMapper->update($videoconference);
     }
 
     /**
@@ -99,7 +97,7 @@ class VideoconferenceService {
      *
      * @param string $videoconference  videoconference notification to update
      * @return Entity|Videoconference  updated videoconference notification entity
-     * @throws DoesNotExistException
+     * @throws \OCP\AppFramework\Db\DoesNotExistException
      */
     protected function updateVideoconference(Videoconference $videoconference) {
         $now = new \DateTime();
@@ -115,16 +113,24 @@ class VideoconferenceService {
      * active connection for given room code, it is updated. Otherwise, a new
      * videoconference notification is created.
      *
-     * @param string $roomCode         room code of the videoconference that initiated the notification
-     * @return Entity|Videoconference  active videoconference notification entity for the given room
+     * @param string $roomCode  room code of the videoconference that initiated the notification
+     * @return ResponseInfo
      */
-    public function connectionNotified(string $roomCode) {
-        $appointments = $this->appointmentMapper->findByJitsiRoomCodeAndState($roomCode, array(Appointment::STATE_PENDANT, Appointment::STATE_ON_COURSE));
-        if (!empty($appointments)) {
-            foreach($appointments as $appointment) {
-                if ($appointment->isDateToday()) {
+    public function procedureConnectionNotified(string $roomCode): ResponseInfo {
+        $response = new ResponseInfo();
+
+        $filter = [
+            'jitsiRoomCode' => $roomCode,
+            'status' => [ProcedureStatus::PENDANT, ProcedureStatus::ON_COURSE]
+        ];
+        $procedures = $this->procedureMapper->findByFilter($filter);
+
+        if (!empty($procedures)) {
+            $firstForToday = null;
+            foreach($procedures as $procedure) {
+                if ($procedure->isAppointmentDateToday($this->configService->getDateTimezone())) {
                     try {
-                        $videoconference = $this->videoconferenceMapper->findLastByAppointmentId($appointment->getId());
+                        $videoconference = $this->videoconferenceMapper->findLastByProcedureId($procedure->getId());
 
                         // If videoconference is not currently connected we DON'T update it,
                         // instead we must force to create a new videoconference notification
@@ -138,27 +144,157 @@ class VideoconferenceService {
                         $videoconference = $this->updateVideoconference($videoconference);
                     }
                     else {
-                        $videoconference = $this->create($appointment->getId());
+                        $videoconference = $this->create($procedure->getId());
                     }
 
-                    return ['result' => 'OK'];
+                    if ($firstForToday === null) {
+                        $firstForToday = $procedure;
+                    }
                 }
             }
+
+            // Surface queue info so the citizen-side Jitsi can show "you are
+            // #N in queue" without ever learning who the attendant is.
+            //
+            // Gated by an admin toggle (default OFF) so existing tenants —
+            // whose Jitsi-meet fork doesn't read this field today — keep
+            // seeing exactly the response shape they had before. Tenants
+            // that opt in can flip `citizenQueueInfo` from the admin UI
+            // (Settings → vTramit → General) or via:
+            //   occ config:app:set vtramit citizenQueueInfo --value=1
+            if ($firstForToday !== null && $this->configService->isCitizenQueueInfoEnabled()) {
+                $response->setInfo('queue', $this->buildQueueInfoForCitizen($firstForToday));
+            }
+        }
+        else {
+            $response->setError($this->translate->t('No appointments found today and in progress for the notified video conference'));
         }
 
-        return ['result' => 'KO'];
+        return $response;
+    }
+
+    /**
+     * How many appointments are "ahead" of this citizen's slot today,
+     * according to the admin-configured scope (see ConfigService::
+     * getCitizenQueueScope). Returns only the count; the attendant
+     * identity (assigned_user_id) is never surfaced.
+     *
+     * "Ahead" always means: appointment_date strictly earlier than the
+     * citizen's own and status in {PENDANT, ON_COURSE}. The scope picks
+     * which column(s) further narrow the set:
+     *   - assigned_user            → same assigned_user_id
+     *   - assigned_group           → same assigned_group_id
+     *   - procedure_type_and_group → same procedure_type_id AND
+     *                                same assigned_group_id
+     *   - topic                    → same topic string
+     *
+     * If the citizen's procedure has no value for the column(s) needed
+     * by the chosen scope, the count is 0 (we don't broaden the scope
+     * silently — admin keeps full control).
+     *
+     * @return array{ahead:int, scope:string}
+     */
+    private function buildQueueInfoForCitizen(Procedure $procedure): array {
+        $scope = $this->configService->getCitizenQueueScope();
+        $info = ['ahead' => 0, 'scope' => $scope];
+
+        $selfDate = $procedure->getAppointmentDate();
+        if (empty($selfDate)) {
+            return $info;
+        }
+
+        $filter = [
+            'minDate' => null, // filled below
+            'maxDate' => null, // filled below
+            'status' => [ProcedureStatus::PENDANT, ProcedureStatus::ON_COURSE],
+        ];
+
+        switch ($scope) {
+            case 'assigned_group':
+                $group = $procedure->getAssignedGroupId();
+                if (empty($group)) {
+                    return $info;
+                }
+                // 'assignedGroupId' (singular) — raw equality only. Don't
+                // use 'groups' here; the latter also AND's the procedure_type
+                // against oc_vtproc_type_group which excludes valid rows
+                // whose type isn't registered for that group.
+                $filter['assignedGroupId'] = $group;
+                break;
+
+            case 'procedure_type_and_group':
+                $group = $procedure->getAssignedGroupId();
+                $typeId = $procedure->getProcedureTypeId();
+                if (empty($group) || empty($typeId)) {
+                    return $info;
+                }
+                $filter['assignedGroupId'] = $group;
+                $filter['procedureTypeId'] = $typeId;
+                break;
+
+            case 'topic':
+                $topic = $procedure->getTopic();
+                if (empty($topic)) {
+                    return $info;
+                }
+                $filter['topic'] = $topic;
+                break;
+
+            case 'assigned_user':
+            default:
+                $userId = $procedure->getAssignedUserId();
+                if (empty($userId)) {
+                    return $info;
+                }
+                $filter['users'] = [$userId];
+                break;
+        }
+
+        $tz = $this->configService->getDateTimezone();
+        $today = new \DateTime('today', $tz);
+        $selfDateTime = $selfDate instanceof \DateTimeInterface
+            ? $selfDate
+            : new \DateTime((string) $selfDate, $tz);
+        $filter['minDate'] = $today;
+        $filter['maxDate'] = $selfDateTime;
+
+        // findByFilter() applies appointment_date <= maxDate inclusively,
+        // so it can return procedures with the same slot as self (and
+        // self itself). Strip those in PHP to get strict "before" semantics.
+        $candidates = $this->procedureMapper->findByFilter($filter);
+
+        $selfTs = $selfDateTime->getTimestamp();
+        $count = 0;
+        foreach ($candidates as $other) {
+            if ($other->getId() === $procedure->getId()) {
+                continue;
+            }
+            $otherDate = $other->getAppointmentDate();
+            if (empty($otherDate)) {
+                continue;
+            }
+            $otherTs = ($otherDate instanceof \DateTimeInterface
+                ? $otherDate
+                : new \DateTime((string) $otherDate, $tz))->getTimestamp();
+            if ($otherTs < $selfTs) {
+                $count++;
+            }
+        }
+        $info['ahead'] = $count;
+
+        return $info;
     }
 
     /**
      * Indicates whether exists a connection waiting to be answered by a moderator.
      *
-     * @param Appointment $appointment  appointment for which check an existing waiting connection
-     * @return bool       true if there is a connection waiting for the appointment; otherwise, false
+     * @param Procedure $procedure  procedure for which check an existing waiting connection
+     * @return bool       true if there is a connection waiting for the procedure; otherwise, false
      */
-    public function isWaitingForModerator(Appointment $appointment): bool {
-        if ($appointment->isDateToday()) {
+    public function isProcedureWaitingForModerator(Procedure $procedure): bool {
+        if ($procedure->isAppointmentDateToday($this->configService->getDateTimezone())) {
             try {
-                $videoconference = $this->videoconferenceMapper->findLastByAppointmentId($appointment->getId());
+                $videoconference = $this->videoconferenceMapper->findLastByProcedureId($procedure->getId());
                 if (!empty($videoconference)) {
                     return $videoconference->isConnected();
                 }
@@ -167,5 +303,17 @@ class VideoconferenceService {
         }
 
         return false;
+    }
+
+    /**
+     * Get the list of procedures waiting to be attended.
+     */
+    public function findConnectedProcedures(): ResponseInfo {
+        $list = $this->videoconferenceMapper->findConnectedProcedures($this->configService->getDateTimezone());
+
+        $response = new ResponseInfo();
+        $response->setInfo('list', $list);
+
+        return $response;
     }
 }

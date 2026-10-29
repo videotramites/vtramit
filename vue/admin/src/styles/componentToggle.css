@@ -1,0 +1,30 @@
+/* Copyright (C) 2020-2026 VIDEOATENCION */
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+.vtramit .collapsible-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.vtramit .collapsible-header button {
+	margin-left: 0px;
+	min-width: 10px;
+	width: 10px;
+}
+
+.vtramit .collapsible-title {
+	font-weight: 600;
+	font-size: 18px;
+}
+
+.vtramit .collapsible-line {
+	flex: 1 1 auto;
+	height: 1px;
+	background: #9D9D9D;
+	margin-left: 8px;
+}
+
+.vtramit .collapsible-item > .item-content {
+	margin-left: 20px;
+}

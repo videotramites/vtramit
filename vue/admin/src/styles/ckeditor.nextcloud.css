@@ -1,0 +1,12 @@
+/* Copyright (C) 2020-2026 VIDEOATENCION */
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+/* Solves main content display */
+.ck.ck-content {
+  margin: 0;
+  width: auto;
+}
+
+/* Solves floating label on Media dropdown */
+.ck.ck-labeled-field-view .ck.ck-label {
+  position: unset;
+}

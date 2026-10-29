@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<info>
+    <activities>
+        <activity>
+            <type>message_queue</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>message_template</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure_stakeholder</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure_type</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure_type_group</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure_type_status</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>procedure_type_status_group</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>rgpd_activity</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>rgpd_option</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>signature</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>signature_button</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>signature_file</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>signature_type</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>topic</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>videoconference</type>
+            <desc>vtramit</desc>
+        </activity>
+
+        <activity>
+            <type>webhook</type>
+            <desc>vtramit</desc>
+        </activity>
+    </activities>
+</info>

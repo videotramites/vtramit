@@ -1,0 +1,41 @@
+# Patterns excluded from the release tarball (rsync --exclude-from syntax).
+# Anything not listed here ends up in vtramit-X.Y.Z.tar.gz.
+
+.git/
+.gitignore
+.gitattributes
+.gitlab/
+.gitlab-ci.yml
+.php_cs.dist
+.php_cs.cache
+.claude/
+.idea/
+.vscode/
+
+AGENTS.md
+Makefile
+cypress.config.js
+
+# Only used for cypress dev-deps at root
+package.json
+package-lock.json
+
+# Source directories (not needed at runtime)
+vue/
+docker/
+test/
+
+# Build artefacts and transient dirs
+build/
+dist/
+node_modules/
+**/node_modules/
+
+# CI byproducts
+*.tar.gz
+*.tar.gz.sha256
+build.env
+
+# OS junk
+.DS_Store
+Thumbs.db

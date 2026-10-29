@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2020-2021 Ajuntament de Barcelona
- * 
- * @author Daniel Tamajon <daniel@floss.cat>
- * @author Kenneth Peiruza <kenneth@floss.cat>
- * @author Letizia Benítez <letizia@floss.cat>
- * @author Marta González <gonzalez.marta@gmail.com>
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
  * @author Jaume Esteban <jaume.escu@gmail.com>
  * @author Ivan Reyné <ivanreyne@gmail.com>
  *
@@ -25,8 +25,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-style('vtramit', 'globalstyles');
 script('vtramit', 'vtramit');
 ?>
 
 <div id="q-app"></div>
+<?php
+
+if ( file_exists("apps/vtramit/templates/main-snippet.php") ) {
+	include ("apps/vtramit/templates/main-snippet.php");
+}
+?>

@@ -1,0 +1,222 @@
+<?php
+/**
+ * @copyright Copyright (c) 2020-2024 VIDEOATENCION
+ *
+ * @author Kenneth Peiruza <kenneth@videoatencion.com>
+ * @author Letizia Benítez <letizia@videoatencion.com>
+ * @author Daniel Tamajon <dtamajon@litesolutions.es>
+ * @author Marta González <marta.gonzalez@litesolutions.es>
+ * @author Jaume Esteban <jaume.escu@gmail.com>
+ * @author Ivan Reyné <ivanreyne@gmail.com>
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace OCA\VTramit\Controller;
+
+use OCP\IRequest;
+use Psr\Log\LoggerInterface;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+//use OCP\AppFramework\Controller;
+
+use OCA\VTramit\Exception\ControllerErrors;
+use OCA\VTramit\Service\ProcedureTypeService;
+use OCA\VTramit\Service\ConfigService;
+use OCA\VTramit\Db\Procedure;
+
+class ProcedureTypeController extends EntityController {
+
+    public function __construct(
+        $appName,
+        IRequest $request,
+        LoggerInterface $logger,
+        ConfigService $configService,
+        ProcedureTypeService $service,
+        $userId
+    ) {
+        parent::__construct($appName, $request, $logger, $configService, $service, $userId);
+    }
+
+    /**
+     * Obtain all existing procedure types.
+     *
+     * @OA\Get(
+     *     path="/web/2.0/procedure-type",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Response(
+     *         response="200",
+     *         description="Obtain all existing procedure types"
+     *     )
+     * )
+     *
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function index(): DataResponse {
+        return parent::index();
+    }
+
+    /**
+     * Obtain procedure type given its identifier.
+     *
+     * @OA\Get(
+     *     path="/web/2.0/procedure-type/{id}",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Obtain procedure type given its identifier"
+     *     )
+     * )
+     *
+     * @param int $id  identifier of the procedure type to get
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function find(int $id): DataResponse {
+        return parent::find($id);
+    }
+
+    /**
+     * Get filtered procedure types.
+     *
+     * @OA\Post(
+     *     path="/web/2.0/procedure-type/search/filter",
+     *     security={{"basicAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"filter"},
+     *             @OA\Property(property="filter", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Procedure types found with given filter"
+     *     )
+     * )
+     *
+     * @param array $filter  filter parameters to apply
+     * @return array         list of procedures that accomplish given filters
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function findByFilter(array $filter): DataResponse {
+        return $this->handleExceptions(function () use ($filter) {
+            $response = $this->service->findByFilter($filter, $this->userId);
+            return new DataResponse($response->getData(), HTTP::STATUS_OK);
+        });
+    }
+
+    /**
+     * Create a new procedure from the given JSON data.
+     *
+     * @OA\Post(
+     *     path="/web/2.0/procedure-type",
+     *     security={{"basicAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"data"},
+     *             @OA\Property(property="data", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Create a new procedure from the given JSON data"
+     *     )
+     * )
+     *
+     * @param string $data  fields of the entity to create with its values
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function create($data): DataResponse {
+        return parent::create($data);
+    }
+
+    /**
+     * Update procedure type related to the given JSON data.
+     *
+     * @OA\Put(
+     *     path="/web/2.0/procedure-type",
+     *     security={{"basicAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"data"},
+     *             @OA\Property(property="data", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Update procedure type related to the given JSON data"
+     *     )
+     * )
+     *
+     * @param string $data  fields of the entity to modify wit its new values
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function update($data): DataResponse {
+        return parent::update($data);
+    }
+
+    /**
+     * Delete procedure type by given id.
+     *
+     * @OA\Delete(
+     *     path="/web/2.0/procedure-type/{id}",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Delete procedure type by given id"
+     *     )
+     * )
+     *
+     * @param string $id  identifier of the entity to delete
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function delete($id): DataResponse {
+        return parent::delete($id);
+    }
+
+    /**
+     * Get the procedure type context for the user.
+     *
+     * @OA\Get(
+     *     path="/web/2.0/context/procedure-type/{id}",
+     *     security={{"basicAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response="200",
+     *         description="Procedure type context"
+     *     )
+     * )
+     *
+     * @param int $id  identifier of the procedure for which retrieve the allowed groups
+     * @return DataResponse
+     */
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    public function getContext(int $id): DataResponse {
+        return $this->handleExceptions(function () use ($id) {
+            $response = $this->service->getContext($id, $this->userId);
+            return new DataResponse($response->getData(), HTTP::STATUS_OK);
+        });
+    }
+}

@@ -1,10 +1,29 @@
 .DS_Store
 .idea
+.vscode
 *.iml
-/vendor/
-/build/
+.php_cs.cache
+vendor/
+build/
 node_modules/
-/.php_cs.cache
-/tests/FrontEnd/e2e/screenshots
-/tests/FrontEnd/e2e/videos
-sftp.json
+
+*.js.LICENSE.txt
+
+.claude
+
+# Ignore docker files
+docker/test-local/data/nextcloud.log
+
+# Ignore cypress files
+.nyc_output
+test/cypress/downloads
+test/cypress/coverage
+test/cypress/report
+test/cypress/screenshots
+
+# Ignore phpunit files
+test/phpunit/.phpunit.result.cache
+test/phpunit-coverage.txt
+test/phpunit-coverage/
+test/phpunit-logs/
+test/phpunit-results.xml

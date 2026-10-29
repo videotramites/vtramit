@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="bootstrap.php"
+         colors="true"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="false"
+         beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="false"
+         failOnWarning="false">
+
+    <testsuites>
+        <testsuite name="all">
+            <directory>./</directory>
+        </testsuite>
+
+        <testsuite name="core">
+            <directory>./ActivityManager</directory>
+            <directory>./Config</directory>
+            <directory>./Context</directory>
+        </testsuite>
+
+        <testsuite name="rgpd">
+            <directory>./RgpdActivity</directory>
+            <directory>./RgpdOption</directory>
+        </testsuite>
+
+        <testsuite name="mail">
+            <directory>./MailQueue</directory>
+            <directory>./MailTemplate</directory>
+        </testsuite>
+
+        <testsuite name="procedure-type">
+            <directory>./ProcedureType</directory>
+            <directory>./ProcedureTypeGroup</directory>
+            <directory>./SignatureButton</directory>
+            <directory>./SignatureType</directory>
+        </testsuite>
+
+        <testsuite name="procedure">
+            <directory>./Procedure</directory>
+            <directory>./ProcedureJob</directory>
+            <directory>./ProcedureStakeholder</directory>
+            <directory>./Signature</directory>
+            <directory>./Videoconference</directory>
+            <directory>./Webhook</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">../../lib/Service</directory>
+        </include>
+        <exclude>
+        </exclude>
+        <report>
+            <html outputDirectory="../phpunit-coverage"/>
+            <text outputFile="../phpunit-coverage.txt"/>
+        </report>
+    </coverage>
+
+    <logging>
+        <junit outputFile="../phpunit-results.xml"/>
+    </logging>
+
+    <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
+        <env name="XDEBUG_MODE" value="coverage" />
+        <env name="PHPUNIT_TEST_ENV" value="1" />
+        <env name="TEST_EMAIL" value="gabriel.napoles@litesolutions.es" />
+        <env name="ADMIN_USER" value="admin" />
+    </php>
+</phpunit>

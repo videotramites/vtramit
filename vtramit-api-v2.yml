@@ -1,0 +1,5306 @@
+# Copyright (C) 2020-2026 VIDEOATENCION
+# SPDX-License-Identifier: AGPL-3.0-or-later
+swagger: '2.0'
+info:
+  description: VTramit API for procedures management
+  title: VTramit API
+  version: 2.0.0
+host: vtramit.example.com
+basePath: /index.php/apps/vtramit
+schemes:
+  - https
+paths:
+  /api/2.0/configuration:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing configurations
+      security:
+        - basicAuth: []
+      operationId: 9647d1796765a7fbd13a8105237154f8
+      summary: Obtain all existing configurations.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Data updated
+      security:
+        - basicAuth: []
+      operationId: dbbc06d34ca6589960d459d1467342e3
+      summary: Update or create configurations using given data.
+  /api/2.0/context/app:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: App context for the user
+      security:
+        - basicAuth: []
+      operationId: be5866398c24a9ae3b1b8c989a053d6c
+      summary: Get the app context for the user.
+  /api/2.0/context/attendance-channel:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available channels
+      security:
+        - basicAuth: []
+      operationId: 17afe8eb61a64ca449b7b476f1b66995
+      summary: Get the available channels.
+  /api/2.0/context/groups:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: System groups
+      security:
+        - basicAuth: []
+      operationId: 16206b112150a408613b1bd9d0fa936f
+      summary: Get the system groups.
+  /api/2.0/context/language:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Supported languages
+      security:
+        - basicAuth: []
+      operationId: 2c39f18d0895992bb4af74f944ecb1eb
+      summary: Get the supported languages.
+  /api/2.0/context/message-channel:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: System channels
+      security:
+        - basicAuth: []
+      operationId: 196c76167ef968b14e23229123e568fe
+      summary: Get the system message channels.
+  '/api/2.0/context/procedure-type/{id}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure context
+      security:
+        - basicAuth: []
+      operationId: 32fc5f69da908ac29822c9d70c822474
+      summary: Get the procedure type context for the user.
+  /api/2.0/context/procedure/status:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available procedure statuses
+      security:
+        - basicAuth: []
+      operationId: 8bcf4a0dda69ef3a08d60847e5db1ed5
+      summary: Get the available procedure statuses.
+  '/api/2.0/context/procedure/{id}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure context
+      security:
+        - basicAuth: []
+      operationId: 5bbfc9601261befc4309bb0816713157
+      summary: Get the procedure context for the user.
+  /api/2.0/context/signature/status:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available signaturestatuses
+      security:
+        - basicAuth: []
+      operationId: 44e98793d8d9ae45122af00a90c97441
+      summary: Get the available signature statuses.
+  /api/2.0/job/procedure/prepareWork:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Work for today prepared
+      operationId: f11550a360dc23a1d551bca0704bb689
+      summary: Execute the prepare for work today job.
+  /api/2.0/job/procedure/prepareWork/find:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Obtained work for today to prepare
+      operationId: eed7e5772f8d0e0e3f8bbeb63f7cebcd
+      summary: Execute the prepare for work today job.
+  /api/2.0/job/procedure/purge:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Old data purged
+      operationId: 643fa85cdc8e1d87b6db194529619021
+      summary: >-
+        Purge old data, remove procedure information and anonymize data in
+        database.
+  /api/2.0/mail-queue:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next mail in queue to be sent; in case of no more mails, it
+            return a null entity
+      security:
+        - basicAuth: []
+      operationId: fdd371333cc253fdfeefe6d92dfe3fc3
+      summary: >-
+        Obtain next mail to be sent in queue. In case of no more mails, it
+        return a null entity.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Add a new mail to the queue from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 5204cab1fa83f26f08609f0ae673b35b
+      summary: Add a new mail to the queue from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update mail in queue related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 4f4b3653d4d73157361ff1ba941a600d
+      summary: Update mail in queue related to the given JSON data.
+  /api/2.0/mail-queue/next:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next mail in queue to be sent; in case of no more mails, it
+            return a null entity
+      security:
+        - basicAuth: []
+      operationId: a31802ea97d354fe4e23de92202dc0d4
+      summary: >-
+        Obtain next mail to be sent in queue. In case of no more mails, it
+        return a null entity.
+  '/api/2.0/mail-queue/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete mail from queue by given id
+      security:
+        - basicAuth: []
+      operationId: 57e94385649187cbd4191558430464cb
+      summary: Delete mail from queue by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain mail to be sent in queue given its identifier
+      security:
+        - basicAuth: []
+      operationId: 2ad78041176939a35f75e8124fcfe69e
+      summary: Obtain mail to be sent in queue given its identifier.
+  /api/2.0/mail-template:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing mail templates
+      security:
+        - basicAuth: []
+      operationId: 4feb1b4ce3759eaa4f37bf0e9e0454dd
+      summary: Obtain all existing mail templates.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new mail template from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: ccfe8aef30535facab16bb231148c89b
+      summary: Create a new mail template from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update mail template related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: b3c503c012733b625a746fab1d7f348c
+      summary: Update mail template related to the given JSON data.
+  /api/2.0/mail-template/context/variables:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all variables to use in the email body
+      security:
+        - basicAuth: []
+      operationId: b4a0fcdac20e006c7806b1014b93a954
+      summary: Obtain all variables to use in the email body.
+  '/api/2.0/mail-template/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete mail template by given id
+      security:
+        - basicAuth: []
+      operationId: 36aa676c3d13c91c671e66721ccf7828
+      summary: Delete mail template by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain mail template given its identifier
+      security:
+        - basicAuth: []
+      operationId: 07f73bab4ef1966dcfd376c8a996f8be
+      summary: Obtain mail template given its identifier.
+  /api/2.0/message-queue:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next message in queue to be sent; in case of no more
+            messages, it return a null entity
+      security:
+        - basicAuth: []
+      operationId: f103bd7c5ea69f3ef547195dfc142e07
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Add a new message to the queue from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 29791e83eaa356d8e7ed91b0ae2b837d
+      summary: Add a new message to the queue from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update message in queue related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: e1179f7d68999f8ad9297335c4905469
+      summary: Update message in queue related to the given JSON data.
+  /api/2.0/message-queue/next:
+    get:
+      parameters:
+        - in: path
+          name: channel
+          required: true
+          type: string
+      responses:
+        '200':
+          description: >-
+            Obtain next message in queue to be sent; in case of no more
+            messages, it return a null entity
+      security:
+        - basicAuth: []
+      operationId: 427834ed6da4c9448292ee41cfad5874
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+  '/api/2.0/message-queue/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Message successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: 6b5e0a15cb1c1f92ebd1b92c50c6b7ee
+      summary: Delete message from queue by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain message to be sent in queue given its identifier
+      security:
+        - basicAuth: []
+      operationId: ba53313e6a5b37c20b0d64be7df5905c
+      summary: Obtain message to be sent in queue given its identifier.
+  /api/2.0/message-template:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing message templates
+      security:
+        - basicAuth: []
+      operationId: ceb92495e0bd390cc0a538b86617b429
+      summary: Obtain all existing message templates.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new message template from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: c6036d948e70e8cbbba8e64730cd51ef
+      summary: Create a new message template from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update message template related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 27339b8f3b11675d361370f54070c5bd
+      summary: Update message template related to the given JSON data.
+  /api/2.0/message-template/context/variables:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all variables to use in the emessage body
+      security:
+        - basicAuth: []
+      operationId: 1f8939b21a85d046821ec259a19fbd36
+      summary: Obtain all variables to use in the emessage body.
+  '/api/2.0/message-template/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete message template by given id
+      security:
+        - basicAuth: []
+      operationId: ffb7f924f8b7369839fe8b7f23b4aa75
+      summary: Delete message template by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain message template given its identifier
+      security:
+        - basicAuth: []
+      operationId: 486978d9d37f4e919b25c6f142fcdce9
+      summary: Obtain message template given its identifier.
+  /api/2.0/procedure:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of all existing procedures
+      security:
+        - basicAuth: []
+      operationId: 6e715ceb4a444c96e37bea3667a0bd84
+      summary: Obtain all existing procedures.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure created
+      security:
+        - basicAuth: []
+      operationId: b2d073fd5fb26b979cd685654dda4033
+      summary: Create a new procedure from the given data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure updated
+      security:
+        - basicAuth: []
+      operationId: c7a641b6d42ceb33f9819bc501727551
+      summary: Update procedure related to the given data.
+  /api/2.0/procedure-stakeholder:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing procedure stakeholders
+      security:
+        - basicAuth: []
+      operationId: 609aa107ab5fa7de7e84f23a137cc30d
+      summary: Obtain all existing procedure stakeholders.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new procedure stakeholder from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 7d67d000e438f3119975af7f3f60c1b8
+      summary: Create a new procedure stakeholder from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update procedure stakeholder
+      security:
+        - basicAuth: []
+      operationId: 49b69370310e1e10cad919b2f14f442c
+      summary: Update procedure stakeholder.
+  /api/2.0/procedure-stakeholder/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedures stakeholders found with given filter
+      security:
+        - basicAuth: []
+      operationId: 278438004c2d988e3ee95f5c3cf9558f
+      summary: Get filtered procedures stakeholders.
+  '/api/2.0/procedure-stakeholder/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete procedure stakeholder by given id
+      security:
+        - basicAuth: []
+      operationId: 5652018d05ed75d0acc09fd1a9c43c5f
+      summary: Delete procedure stakeholder by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure stakeholder given its identifier
+      security:
+        - basicAuth: []
+      operationId: 878ad9feee7838575f410b2536f0784b
+      summary: Obtain procedure stakeholder given its identifier.
+  '/api/2.0/procedure-stakeholder/{id}/entry-page':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: the procedure stakeholder public entry page
+      security:
+        - basicAuth: []
+      operationId: 24906ce2127af323a659402845b1c628
+      summary: Get the entry page for given stakeholder.
+  '/api/2.0/procedure-stakeholder/{id}/password':
+    put:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Force a password change
+      security:
+        - basicAuth: []
+      operationId: 9bf1a38da121069988a26347e76c8b0e
+      summary: Force a password change.
+  /api/2.0/procedure-type:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing procedure types
+      security:
+        - basicAuth: []
+      operationId: ad0d90b7c050a51d18f593f721b96a7b
+      summary: Obtain all existing procedure types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new procedure from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 9964f844d541b1e146c85bbfff05aad9
+      summary: Create a new procedure from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update procedure type related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 76cc044909b993f2d3f6cc02ca00a87f
+      summary: Update procedure type related to the given JSON data.
+  /api/2.0/procedure-type-group:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing groups
+      security:
+        - basicAuth: []
+      operationId: f42c9e5957bd3b14f36ec946053083dd
+      summary: Obtain all existing groups.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new groups from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: b3dd01b1ec432c64ef1af57bbca0bc1a
+      summary: Create a new groups from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update groups related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 20cdff4e0fa2576f72e5bcc8f880bc04
+      summary: Update groups related to the given JSON data.
+  '/api/2.0/procedure-type-group/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete groups by given id
+      security:
+        - basicAuth: []
+      operationId: a7dadaed9d3511c0453b25600eea8221
+      summary: Delete groups by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain groups given its identifier
+      security:
+        - basicAuth: []
+      operationId: b4166211869c49e1443d5822a1a8e024
+      summary: Obtain groups given its identifier.
+  /api/2.0/procedure-type/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedure types found with given filter
+      security:
+        - basicAuth: []
+      operationId: 5087f2ecc4edca85a21289fcf1303473
+      summary: Get filtered procedure types.
+  '/api/2.0/procedure-type/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete procedure type by given id
+      security:
+        - basicAuth: []
+      operationId: 33ed6375fc64b4aefab984bfd21eb9fc
+      summary: Delete procedure type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure type given its identifier
+      security:
+        - basicAuth: []
+      operationId: c50bf77c89cf138edea222c47baad1e7
+      summary: Obtain procedure type given its identifier.
+  '/api/2.0/procedure-type/{id}/groups':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain the list of allowed groups for given procedure type
+      security:
+        - basicAuth: []
+      operationId: 47dc58e7ddf2673957dda37f9ed2308c
+      summary: Obtain the list of allowed groups for given procedure type.
+  '/api/2.0/procedure-type/{id}/signature-buttons':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: >-
+            Obtain the list of allowed signature buttons for given procedure
+            type
+      security:
+        - basicAuth: []
+      operationId: 47323a9226ca99cabeb8ef23bea518d1
+      summary: Obtain the list of allowed groups for given procedure type.
+  /api/2.0/procedure/externalId:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure updated
+      security:
+        - basicAuth: []
+      description: |-
+        Create or updates a procedure using the given data.
+
+        It checks if there is an existing procedure with the same external ID in
+        which case it updates the existing procedure; otherwise, a new procedure
+        is created.
+      operationId: c83d7e92bd724e7cc0227540ed0eefef
+      summary: >-
+        It checks if there is an existing procedure with the same external ID in
+        which case it updates the existing procedure; otherwise, a new procedure
+        is created
+  '/api/2.0/procedure/externalId/{externalId}':
+    get:
+      parameters:
+        - in: path
+          name: externalId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of all non-cancelled procedures with given external ID
+      security:
+        - basicAuth: []
+      operationId: 13177fbbb04b71e8364ee8fb13622021
+      summary: Get all non-cancelled procedures using given external ID.
+  /api/2.0/procedure/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: object
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedures found with given filter
+      security:
+        - basicAuth: []
+      operationId: 8060c0bdb11235772a2e990bbeab95fb
+      summary: Get filtered procedures.
+  /api/2.0/procedure/signature/op/waiting:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of procedures awaiting to be signed
+      security:
+        - basicAuth: []
+      operationId: 0c9ce37611608bcec5780e559ea5ebb8
+      summary: Get the list of procedures waiting to be signed.
+  /api/2.0/procedure/videoconference/op/waiting:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of procedures awaiting to be attended by videoconference
+      security:
+        - basicAuth: []
+      operationId: 3fef8d6a531d8cba7bd58133861dba68
+      summary: Get the list of procedures waiting to be attended.
+  '/api/2.0/procedure/videoconference/{jitsiRoomCode}/waiting':
+    post:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of procedures awaiting to be attended by videoconference
+      security:
+        - basicAuth: []
+      operationId: acec90d20b756d8d5dcafd015c8abdae
+      summary: >-
+        Manage the notification of waiting for videoconference. This
+        notification
+
+        must be sent by the videoconference system, like Jitsi.
+  '/api/2.0/procedure/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure deleted
+      security:
+        - basicAuth: []
+      operationId: 0cff6b4072d3e69415c08bc818047d14
+      summary: Delete procedure by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure found
+      security:
+        - basicAuth: []
+      operationId: 2168e199c854a98651575756af294023
+      summary: Obtain procedure given its identifier.
+  '/api/2.0/procedure/{id}/file/download-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from downloads folder
+      operationId: 216ca3d8ab4a70909aafdaffdf0fa91a
+      summary: Deletes a file from the downloads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the downloads folder or the file content when
+            filename is provided
+      operationId: 248671983976f014b342f86cd73cc8a3
+      summary: >-
+        Obtain list of files in the downloads folder, or the content of a
+        specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: e4bf87ec8a2763964231ef5fc477b6fd
+      summary: Stores given file to the downloads folder.
+  '/api/2.0/procedure/{id}/file/upload-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from uploads folder
+      operationId: c69c11530f7f348771cc876839a599f9
+      summary: Deletes a file from the uploads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the uploads folder or the file content when
+            filename is provided
+      operationId: a430eeff8b852cb197145f63d74474ad
+      summary: >-
+        Obtain list of files in the uploads folder, or the content of a specific
+        file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: 5e66b47c4db6be5a2ba0469d079c98ee
+      summary: Stores given file to the uploads folder.
+  '/api/2.0/procedure/{id}/signature/download-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from signature downloads folder
+      operationId: 0191d4e2ddbadd47c4890a753005ef8e
+      summary: Deletes a file from the signature downloads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the signature downloads folder or the file content
+            when filename is provided
+      operationId: 83300b5312514115d778745573416b48
+      summary: >-
+        Obtain list of files in the signature downloads folder, or the content
+        of a specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: 909c0181cba2c068f995c258037f7140
+      summary: Stores given file to the signature downloads folder.
+  '/api/2.0/procedure/{id}/signature/initialize/{signatureButtonId}':
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: path
+          name: signatureButtonId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Signature initialized
+      operationId: 1f81e0a7e10a014567ac384ce2dc7421
+      summary: Initialize the signature process for given procedure.
+  '/api/2.0/procedure/{id}/signature/upload-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from signature uploads folder
+      operationId: c183552d990d30e510baff675ebf3fd6
+      summary: Deletes a file from the signature uploads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the signature uploads folder or the file content
+            when filename is provided
+      operationId: 0698c7dc4b2891b1aebec54560ffbaad
+      summary: >-
+        Obtain list of files in the signature uploads folder, or the content of
+        a specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: ed44e06a8c64cc3cd3a11404404d9c4b
+      summary: Stores given file to the signature uploads folder.
+  '/api/2.0/procedure/{id}/stakeholder/op/email':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: E-mail sent
+      security:
+        - basicAuth: []
+      operationId: 77de325b48b47b0eb3ccde9b5ef7f8d0
+      summary: Send the e-mail to all stakeholders that belongs to given procedure.
+  '/api/2.0/procedure/{jitsiRoomCode}/videoconference/finished':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              jitsiRoomCode:
+                type: string
+            required:
+              - jitsiRoomCode
+            type: object
+      responses:
+        '200':
+          description: Videoconference finished
+      operationId: 09a21674a72c12fe8085f062a9c3e5f3
+      summary: Receive notification of finished videoconference.
+  '/api/2.0/procedure/{jitsiRoomCode}/videoconference/started':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              jitsiRoomCode:
+                type: string
+            required:
+              - jitsiRoomCode
+            type: object
+      responses:
+        '200':
+          description: Videoconference started
+      operationId: 3928e45c342d610438c7465933067e1a
+      summary: Receive notification of started videoconference.
+  '/api/2.0/procedure/{procedureId}/stakeholder':
+    delete:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure stakeholders deleted for given procedure id
+      security:
+        - basicAuth: []
+      operationId: 62ec32b5b7fb741fa1fc4b9193ee92de
+      summary: Delete all procedure stakeholder by given procedure id.
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: >-
+            Obtain all existing procedure stakeholders that belongs to the given
+            procedure
+      security:
+        - basicAuth: []
+      operationId: f565ce8897b86bdbedd44dc2256fdb6b
+      summary: >-
+        Obtain all existing procedure stakeholders that belongs to the given
+        procedure.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New procedure stakeholder created
+      security:
+        - basicAuth: []
+      operationId: fac1401b8bde1bc10892b16b1fd2666b
+      summary: |-
+        Create a new procedure stakeholder associated to a procedure from the
+        given data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure stakeholder updated
+      security:
+        - basicAuth: []
+      operationId: 3921b8fd9407621e2ee34aeae1935e02
+      summary: Update procedure stakeholder.
+  '/api/2.0/procedure/{procedureId}/stakeholder/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure stakeholder deleted
+      security:
+        - basicAuth: []
+      operationId: 6904dbc01fb44dad943ba4139a678d5d
+      summary: Delete procedure stakeholder by given id.
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure stakeholder given its identifier
+      security:
+        - basicAuth: []
+      operationId: 5f56aa8c7d736c8685ea93d887378fe0
+      summary: Obtain procedure stakeholder given its identifier.
+  '/api/2.0/procedure/{procedureId}/stakeholder/{id}/op/email':
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Send the e-mail to given stakeholder that belongs to given procedure
+      security:
+        - basicAuth: []
+      operationId: 22ada8b8e383d933bc4b73da78624979
+      summary: Send the e-mail to given stakeholder that belongs to given procedure.
+  '/api/2.0/procedure/{procedureId}/stakeholder/{procedureStakeholderId}/rgpd-activity/last':
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: procedureStakeholderId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD activities given its identifier
+      security:
+        - basicAuth: []
+      operationId: c0eaddd779573cc8a272ab5c7c9393f0
+      summary: |-
+        Obtain the last activity for a given stakeholder in a procedure. If none
+        is found, a null entity is returned.
+  /api/2.0/rgpd-activity:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing RGPD activities
+      security:
+        - basicAuth: []
+      operationId: e0b73e404dcaf89a624adcc40933afcc
+      summary: Obtain all existing RGPD activities.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new RGPD activities from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 99280985cd2443add2e4fb1a7467ed55
+      summary: Create a new RGPD activities from the given JSON data.
+  /api/2.0/rgpd-activity/:
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update RGPD activities related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 35341d46bd17814f29cf20c6bf85380f
+      summary: Update RGPD activities related to the given JSON data.
+  '/api/2.0/rgpd-activity/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete RGPD activities by given id
+      security:
+        - basicAuth: []
+      operationId: 70a73170709c34169b3850223b2676a8
+      summary: Delete RGPD activities by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD activities given its identifier
+      security:
+        - basicAuth: []
+      operationId: 889c35a097874f2f15cc8815b0a77e3a
+      summary: Obtain RGPD activities given its identifier.
+  /api/2.0/rgpd-option:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing RGPD options
+      security:
+        - basicAuth: []
+      operationId: 55cad340e7cf6a470eacaf8b4b2f219b
+      summary: Obtain all existing RGPD options.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new RGPD options from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: aac7bd77eb63d58022a03eaa94d5d23c
+      summary: Create a new RGPD options from the given JSON data.
+  /api/2.0/rgpd-option/:
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update RGPD options related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 8ca9d69fadb955c9220d26fda801e2a6
+      summary: Update RGPD options related to the given JSON data.
+  '/api/2.0/rgpd-option/jitsiRoomCode/{jitsiRoomCode}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: RGPD options for the Jitsi room session
+      security:
+        - basicAuth: []
+      operationId: 3e94b12ca1c01be4a7c5a474682ec13c
+      summary: Obtain RGPD options for the given Jitsi room session.
+  '/api/2.0/rgpd-option/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete RGPD options by given id
+      security:
+        - basicAuth: []
+      operationId: fa4cbbde505d26a63f9f477bdd402938
+      summary: Delete RGPD options by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD options given its identifier
+      security:
+        - basicAuth: []
+      operationId: 528adba1d09a0b644838b4168ffcae49
+      summary: Obtain RGPD options given its identifier.
+  /api/2.0/signature-buttons:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing signature types
+      security:
+        - basicAuth: []
+      operationId: 24384580cdcc620ae1cf54e24b923391
+      summary: Obtain all existing signature types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new signature button from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 1b2b2d46b2ca5b89181dfade4d88013b
+      summary: Create a new signature type from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update signature button related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: d52b9dd616f876b9271bcfcf60bdd300
+      summary: Update signature type related to the given JSON data.
+  '/api/2.0/signature-buttons/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete signature button by given id
+      security:
+        - basicAuth: []
+      operationId: 9b0205e69151935e1bd8ee7c564a5fc8
+      summary: Delete signature type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain signature button given its identifier
+      security:
+        - basicAuth: []
+      operationId: d89bc1e0c6ac1d0403d67cd96d554ee3
+      summary: Obtain signature type given its identifier.
+  /api/2.0/signature-type:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing signature types
+      security:
+        - basicAuth: []
+      operationId: 0197613edc11c36796e070e5981e45bb
+      summary: Obtain all existing signature types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new signature type from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: a23a9bfc25fd65d2d323730f23a162c5
+      summary: Create a new signature type from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update signature type related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 2ac6c58801d2c5e33265d6cccbd42d43
+      summary: Update signature type related to the given JSON data.
+  '/api/2.0/signature-type/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete signature type by given id
+      security:
+        - basicAuth: []
+      operationId: f8827088bbab37080bd85842dabca71c
+      summary: Delete signature type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain signature type given its identifier
+      security:
+        - basicAuth: []
+      operationId: 5e677831caf5335a6146d0486ebe2bc2
+      summary: Obtain signature type given its identifier.
+  /api/2.0/signature/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Signatures found with given filter
+      security:
+        - basicAuth: []
+      operationId: a2e917c7dcfdf78fbfcd24e2fc41afa2
+      summary: Get filtered signatures.
+  '/api/2.0/signature/info/{hash}':
+    get:
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get information related to given hash
+      security:
+        - basicAuth: []
+      operationId: dda5b6b58426b19993ce1b1e848220b0
+      summary: Get information related to given hash
+  '/api/2.0/signature/pendingfiles/{jitsiRoomCode}':
+    post:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of pending files to be signed
+      security:
+        - basicAuth: []
+      operationId: 5c3184ddb282d4dff9d08ef53ebe8f71
+      summary: Get the list of pending files to be signed
+  '/api/2.0/signature/uploadcompleted/{hash}':
+    post:
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          type: string
+      responses:
+        '200':
+          description: >-
+            Notification about upload is completed for files related to given
+            hash
+      security:
+        - basicAuth: []
+      operationId: dd6ecbed3c0b7fa921d93e6856f82abf
+      summary: Notification about upload is completed for files related to given hash
+  '/api/2.0/signature/{id}/file/{fileId}/cancel':
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: path
+          name: fileId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Signature file cancelled
+      security:
+        - basicAuth: []
+      operationId: 5c9c1ebd1c3fbd173a34a3494c5fa1bb
+      summary: Cancel a specific file within a signature (public API endpoint).
+  /api/2.0/test/procedure/clean:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Delete all data in procedure type tables
+      operationId: cc9be61e7c15f2308c71413d752445dd
+      summary: Delete current data in all related procedure type tables.
+  /api/2.0/test/procedure/configuration/clean:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Delete all data in procedure type tables
+      operationId: 4d851fcc53015a1d3a106e819977632f
+      summary: Delete current data in all related procedure type tables.
+  /api/2.0/test/procedureEntity/all:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Execute complete test set for procedure entity
+      operationId: 82e4572cb1e071597a169d9d0a7414ad
+      summary: Execute complete test set for procedure entity.
+  /api/2.0/test/procedureType/create:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Create data for testing in all related procedure type tables
+      operationId: 898593bb53328b07f0a8e5a8ea9802ef
+      summary: Create data for testing in all related procedure type tables.
+  /api/2.0/topic:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing topics
+      security:
+        - basicAuth: []
+      operationId: 916f498095dbc1eee56418b3e36026d2
+      summary: Obtain all existing topics.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new topic from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: f7720dfa6dd79a10d275325f2f4ae0b8
+      summary: Create a new topic from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update topic related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 057daf671bd0a35b7781dfe3c0ef0550
+      summary: Update topic related to the given JSON data.
+  /api/2.0/topic/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Topics found with given filter
+      security:
+        - basicAuth: []
+      operationId: f4da069188fbb6aebbc28371290107fd
+      summary: Get filtered topics.
+  '/api/2.0/topic/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete topic by given id
+      security:
+        - basicAuth: []
+      operationId: 541056ddc125ac6b9e2962eea60b14c6
+      summary: Delete topic by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain topic given its identifier
+      security:
+        - basicAuth: []
+      operationId: 187210859b521c0a6bce7ff163caf993
+      summary: Obtain topic given its identifier.
+  '/api/2.0/videoconference/{jitsiRoomCode}/command':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                additionalProperties: true
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New command added to the queue
+      security:
+        - basicAuth: []
+      operationId: d65e8d8c77df1e10d2c86de24273c851
+      summary: Add a new command to the queue from the given JSON data.
+  '/api/2.0/videoconference/{jitsiRoomCode}/command/next':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Next command in the queue or null when empty
+          schema: {}
+      security:
+        - basicAuth: []
+      operationId: 333a4c1ee8030df73070a155b919da40
+      summary: >-
+        Obtain next command to be sent in queue. In case of no more commands, it
+        return a null entity.
+  '/api/2.0/videoconference/{jitsiRoomCode}/command/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Command successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: c559b8a6e1f6a8176e4ef70e19beb206
+      summary: Delete command from queue by given id.
+  '/api/2.0/videoconference/{jitsiRoomCode}/message/{channel}':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                additionalProperties: true
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New message added to the queue
+      security:
+        - basicAuth: []
+      operationId: 8e88f59968dc76856a679523f6e5d0da
+      summary: Add a new message to the queue from the given JSON data.
+  '/api/2.0/videoconference/{jitsiRoomCode}/message/{channel}/next':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Next message in the queue or null when empty
+          schema: {}
+      security:
+        - basicAuth: []
+      operationId: 2047bdc028820dbb34094ca68af45492
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+  '/api/2.0/videoconference/{jitsiRoomCode}/message/{channel}/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Message successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: 8a52291de3c4160d81dbf2babc7413d0
+      summary: Delete message from queue by given id.
+  /api/2.0/webhook:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing webhooks
+      security:
+        - basicAuth: []
+      operationId: 326ca94f7ac27e21a3ee03b1582a55bd
+      summary: Obtain all existing webhooks.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new webhook from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: a2f7820dc5584580c5bda5565d76e3f7
+      summary: Create a new webhook from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update webhook related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 390c78897dd50cf51ea513085b87971e
+      summary: Update webhook related to the given JSON data.
+  '/api/2.0/webhook/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete webhook by given id
+      security:
+        - basicAuth: []
+      operationId: 1d373e47a8f4411db3c54ee0ba207451
+      summary: Delete webhook by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain webhook given its identifier
+      security:
+        - basicAuth: []
+      operationId: 98a6a65e09d66cbcc43fca774957f84f
+      summary: Obtain webhook given its identifier.
+  /web/2.0/configuration:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing configurations
+      security:
+        - basicAuth: []
+      operationId: c75b23d6e42c89c5a4e610c84bc573ca
+      summary: Obtain all existing configurations.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Data updated
+      security:
+        - basicAuth: []
+      operationId: e9206fc7fb67cb1d6958b8462af4a95d
+      summary: Update or create configurations using given data.
+  /web/2.0/context/app:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: App context for the user
+      security:
+        - basicAuth: []
+      operationId: 39e76a0c27b7bdbb25d7d6885b7e00d6
+      summary: Get the app context for the user.
+  /web/2.0/context/attendance-channel:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available channels
+      security:
+        - basicAuth: []
+      operationId: b8b69c76bb2c8b7763de5b13112afdbe
+      summary: Get the available channels.
+  /web/2.0/context/groups:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: System groups
+      security:
+        - basicAuth: []
+      operationId: 4dc1531a4b6bae3b9f20eb4bb7fe9cd8
+      summary: Get the system groups.
+  /web/2.0/context/language:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Supported languages
+      security:
+        - basicAuth: []
+      operationId: e6078f2561454a8f0b041f4d88bf5c36
+      summary: Get the supported languages.
+  /web/2.0/context/message-channel:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: System channels
+      security:
+        - basicAuth: []
+      operationId: 5d500bfb2882b2b38f558c86b7c11e9c
+      summary: Get the system message channels.
+  '/web/2.0/context/procedure-type/{id}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure type context
+      security:
+        - basicAuth: []
+      operationId: 90c92c14e2bed91f53f26cc99092f9f7
+      summary: Get the procedure type context for the user.
+  /web/2.0/context/procedure/status:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available procedure statuses
+      security:
+        - basicAuth: []
+      operationId: 36bf0626a119f98410c9c581dce83d8c
+      summary: Get the available procedure statuses.
+  '/web/2.0/context/procedure/{id}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure context
+      security:
+        - basicAuth: []
+      operationId: 55b448a824bf1257d2a6384841a31585
+      summary: Get the procedure context for the user.
+  /web/2.0/context/signature/status:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Available signaturestatuses
+      security:
+        - basicAuth: []
+      operationId: bf46df6ca4490d194dd607703a3759bb
+      summary: Get the available signature statuses.
+  /web/2.0/job/procedure/prepareWork:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Work for today prepared
+      operationId: 1f0cedece54dfd91a91025faa0c71af3
+      summary: Execute the prepare for work today job.
+  /web/2.0/job/procedure/prepareWork/find:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Obtained work for today to prepare
+      operationId: 51d2d597fb6b32613c77b4406bf53a1e
+      summary: Execute the prepare for work today job.
+  /web/2.0/job/procedure/purge:
+    post:
+      parameters: []
+      responses:
+        '200':
+          description: Old data purged
+      operationId: 62a401abb7b285106ba3850c7034e614
+      summary: >-
+        Purge old data, remove procedure information and anonymize data in
+        database.
+  /web/2.0/mail-queue:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next mail in queue to be sent; in case of no more mails, it
+            return a null entity
+      security:
+        - basicAuth: []
+      operationId: 41e7c6c6e0f88bcaf73109dce737c4a4
+      summary: >-
+        Obtain next mail to be sent in queue. In case of no more mails, it
+        return a null entity.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Add a new mail to the queue from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 777e5be925d0a11d7ef5316056db58d0
+      summary: Add a new mail to the queue from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update mail in queue related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 8e4c1008ffa47737cea462ee4f598ec8
+      summary: Update mail in queue related to the given JSON data.
+  /web/2.0/mail-queue/next:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next mail in queue to be sent; in case of no more mails, it
+            return a null entity
+      security:
+        - basicAuth: []
+      operationId: 7e0f5ec026ff2a7ccb6ead2e61f729f5
+      summary: >-
+        Obtain next mail to be sent in queue. In case of no more mails, it
+        return a null entity.
+  '/web/2.0/mail-queue/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete mail from queue by given id
+      security:
+        - basicAuth: []
+      operationId: 27b621d02fc0056b8be353d87c34966a
+      summary: Delete mail from queue by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain mail to be sent in queue given its identifier
+      security:
+        - basicAuth: []
+      operationId: 663d44d25492d643f58c8d5131ef13c3
+      summary: Obtain mail to be sent in queue given its identifier.
+  /web/2.0/mail-template:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing mail templates
+      security:
+        - basicAuth: []
+      operationId: d13cb11a6fb5298da02aa15a2d393884
+      summary: Obtain all existing mail templates.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new mail template from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 9776f9c6bfa2bf170c647666a833feb1
+      summary: Create a new mail template from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update mail template related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 70d2e99bd52c40ef1a27f8669185b351
+      summary: Update mail template related to the given JSON data.
+  /web/2.0/mail-template/context/variables:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all variables to use in the email body
+      security:
+        - basicAuth: []
+      operationId: bf9f43e9dec48eba3a9a6a288d0908fa
+      summary: Obtain all variables to use in the email body.
+  '/web/2.0/mail-template/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete mail template by given id
+      security:
+        - basicAuth: []
+      operationId: 8749d862081961db5b7fb08050ceda77
+      summary: Delete mail template by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain mail template given its identifier
+      security:
+        - basicAuth: []
+      operationId: 82d5a8171f9bea5158312c8459e2f4f8
+      summary: Obtain mail template given its identifier.
+  /web/2.0/message-queue:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Obtain next message in queue to be sent; in case of no more
+            messages, it return a null entity
+      security:
+        - basicAuth: []
+      operationId: eeb46c16f541bc0aa08668536512006a
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Add a new message to the queue from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: cc51b3700f42d2fe8785ca07f3003fe4
+      summary: Add a new message to the queue from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update message in queue related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: cddfd16f2971a09f8d3d4c85c9ea1527
+      summary: Update message in queue related to the given JSON data.
+  /web/2.0/message-queue/next:
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: >-
+            Obtain next message in queue to be sent; in case of no more
+            messages, it return a null entity
+      security:
+        - basicAuth: []
+      operationId: 6673893b178b5c270fd6ab3b69fcde39
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+  '/web/2.0/message-queue/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Message successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: 981ec8f1a8405d52f49dd00c944b8773
+      summary: Delete message from queue by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain message to be sent in queue given its identifier
+      security:
+        - basicAuth: []
+      operationId: 25e6cb64a794a394423fe2187eeb9715
+      summary: Obtain message to be sent in queue given its identifier.
+  /web/2.0/message-template:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing message templates
+      security:
+        - basicAuth: []
+      operationId: 2f26b7e1a8084561e853ba5b5e68e596
+      summary: Obtain all existing message templates.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new message template from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 6affd4618a0f8ff6f04ab5e70fee59a9
+      summary: Create a new message template from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update message template related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 0fd24890eafa1b3b8f7376478bfa63da
+      summary: Update message template related to the given JSON data.
+  /web/2.0/message-template/context/variables:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all variables to use in the emessage body
+      security:
+        - basicAuth: []
+      operationId: 7bf93dbdaa3305603a3bb813c2c828a9
+      summary: Obtain all variables to use in the emessage body.
+  '/web/2.0/message-template/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete message template by given id
+      security:
+        - basicAuth: []
+      operationId: 408e2942c0bcbb570f4f5fbe34affa2d
+      summary: Delete message template by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain message template given its identifier
+      security:
+        - basicAuth: []
+      operationId: beab071803e273a9c8ffa859d22532bc
+      summary: Obtain message template given its identifier.
+  /web/2.0/procedure:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of all existing procedures
+      security:
+        - basicAuth: []
+      operationId: 5bce5173b7f9342c312eca7a46b6f809
+      summary: Obtain all existing procedures.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure created
+      security:
+        - basicAuth: []
+      operationId: ab502d1c4a9b08f9b64c14b1c32cdff2
+      summary: Create a new procedure from the given data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure updated
+      security:
+        - basicAuth: []
+      operationId: 2405216b95d4ae1bd9980d181e2d38d2
+      summary: Update procedure related to the given data.
+  /web/2.0/procedure-stakeholder:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing procedure stakeholders
+      security:
+        - basicAuth: []
+      operationId: 8b5463d8b070de409a3ae65ad9fe749b
+      summary: Obtain all existing procedure stakeholders.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new procedure stakeholder from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: cf24f318803670d8ef116a1ddb68382d
+      summary: Create a new procedure stakeholder from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update procedure stakeholder
+      security:
+        - basicAuth: []
+      operationId: b1f19d0749ba6f21badd7a5e6d6a7e07
+      summary: Update procedure stakeholder.
+  /web/2.0/procedure-stakeholder/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedures stakeholders found with given filter
+      security:
+        - basicAuth: []
+      operationId: 7852d9f818caca8b1ac00efdea4f2fde
+      summary: Get filtered procedures stakeholders.
+  '/web/2.0/procedure-stakeholder/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete procedure stakeholder by given id
+      security:
+        - basicAuth: []
+      operationId: 3d0764bfe97c414e6e1b7b10603bda35
+      summary: Delete procedure stakeholder by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure stakeholder given its identifier
+      security:
+        - basicAuth: []
+      operationId: 49d586f02995925ddfa6e001ec824897
+      summary: Obtain procedure stakeholder given its identifier.
+  '/web/2.0/procedure-stakeholder/{id}/entry-page':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: the procedure stakeholder public entry page
+      security:
+        - basicAuth: []
+      operationId: af61687c5d6409c69e13d415926eeb96
+      summary: Get the entry page for given stakeholder.
+  '/web/2.0/procedure-stakeholder/{id}/password':
+    put:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Force a password change
+      security:
+        - basicAuth: []
+      operationId: e382f07ab82982bbd2c8f979dc286f8b
+      summary: Force a password change.
+  /web/2.0/procedure-type:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing procedure types
+      security:
+        - basicAuth: []
+      operationId: 4f27fee8c3a22354cf509d87552b65fa
+      summary: Obtain all existing procedure types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new procedure from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: d609f7b764765e1ea1eff73ee9941154
+      summary: Create a new procedure from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update procedure type related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 59bd50d61f81a850582bdc74093bae12
+      summary: Update procedure type related to the given JSON data.
+  /web/2.0/procedure-type-group:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing groups
+      security:
+        - basicAuth: []
+      operationId: 85410259a7ab0bada1d24ea05a25b16c
+      summary: Obtain all existing groups.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new groups from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: e158a955538356b69b37459ec7a87bb4
+      summary: Create a new groups from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update groups related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: bf2e741f8864b3cfca45a45fad35bb84
+      summary: Update groups related to the given JSON data.
+  '/web/2.0/procedure-type-group/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete groups by given id
+      security:
+        - basicAuth: []
+      operationId: 95da4ba3141899348fac946760993869
+      summary: Delete groups by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain groups given its identifier
+      security:
+        - basicAuth: []
+      operationId: 0656c7b26cc4cbb8e829577a82ae7906
+      summary: Obtain groups given its identifier.
+  /web/2.0/procedure-type/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedure types found with given filter
+      security:
+        - basicAuth: []
+      operationId: 1ed1cf0101b2d4a65264284b46862841
+      summary: Get filtered procedure types.
+  '/web/2.0/procedure-type/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete procedure type by given id
+      security:
+        - basicAuth: []
+      operationId: 8a41268df6f60632b69e596d838cfba0
+      summary: Delete procedure type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure type given its identifier
+      security:
+        - basicAuth: []
+      operationId: 4c23a7a726f05d51a3ca776e095a195d
+      summary: Obtain procedure type given its identifier.
+  '/web/2.0/procedure-type/{id}/groups':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain the list of allowed groups for given procedure type
+      security:
+        - basicAuth: []
+      operationId: c4dde32acf0fd2aab728826979f95539
+      summary: Obtain the list of allowed groups for given procedure type.
+  '/web/2.0/procedure-type/{id}/signature-buttons':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: >-
+            Obtain the list of allowed signature buttons for given procedure
+            type
+      security:
+        - basicAuth: []
+      operationId: fe8ed749d2e3b0783e34b9df6a7f62e6
+      summary: Obtain the list of allowed groups for given procedure type.
+  /web/2.0/procedure/externalId:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure updated
+      security:
+        - basicAuth: []
+      description: >-
+        Create or updates a procedure using the given data. It checks if there
+        is an
+
+        existing procedure with the same external ID in which case it updates
+        the
+
+        existing procedure; otherwise, a new procedure is created.
+      operationId: 7928b5cb5f0e4376a26d50af8f4d8052
+      summary: >-
+        It checks if there is an existing procedure with the same external ID in
+        which case it updates the existing procedure; otherwise, a new procedure
+        is created
+  '/web/2.0/procedure/search/externalId/{externalId}':
+    get:
+      parameters:
+        - in: path
+          name: externalId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of all non-cancelled procedures with given external ID
+      security:
+        - basicAuth: []
+      operationId: 0711f387bda78933476c2d848ce3ca9e
+      summary: Get all non-cancelled procedures using given external ID.
+  /web/2.0/procedure/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: object
+              isDownloadRequest:
+                type: boolean
+              requestedPage:
+                type: integer
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Procedures found with given filter
+      security:
+        - basicAuth: []
+      operationId: 6f812c7258e08b51af0c5ed3368d3200
+      summary: Get filtered procedures.
+  /web/2.0/procedure/signature/op/waiting:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of procedures awaiting to be signed
+      security:
+        - basicAuth: []
+      operationId: 56a4c68edf6d5e68cacfe7c95f380268
+      summary: Get the list of procedures waiting to be signed.
+  /web/2.0/procedure/videoconference/op/waiting:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: List of procedures awaiting to be attended by videoconference
+      security:
+        - basicAuth: []
+      operationId: de00cf014ab48b650139b9dbef6c27c7
+      summary: Get the list of procedures waiting to be attended.
+  '/web/2.0/procedure/videoconference/{jitsiRoomCode}/waiting':
+    post:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: List of procedures awaiting to be attended by videoconference
+      security:
+        - basicAuth: []
+      operationId: 95069e30e3cdd77f93343aae5850a47c
+      summary: >-
+        Manage the notification of waiting for videoconference. This
+        notification
+
+        must be sent by the videoconference system, like Jitsi.
+  '/web/2.0/procedure/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure deleted
+      security:
+        - basicAuth: []
+      operationId: df84be39822af99770afb498fb06be32
+      summary: Delete procedure by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure found
+      security:
+        - basicAuth: []
+      operationId: c605a5340879b9be6fc2872f7ef0319d
+      summary: Obtain procedure given its identifier.
+  '/web/2.0/procedure/{id}/file/download-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from downloads folder
+      operationId: 1c47f03c0ef59f0eb695d2ab7d05cfb2
+      summary: Deletes a file from the downloads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the downloads folder or the file content when
+            filename is provided
+      operationId: 450f0ed099e33b14b3089e0144225ad7
+      summary: >-
+        Obtain list of files in the downloads folder, or the content of a
+        specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: 9bacbc63055f7b79aca0937a111f4f85
+      summary: Stores given file to the downloads folder.
+  '/web/2.0/procedure/{id}/file/upload-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from uploads folder
+      operationId: 92713a42fef46b83c70a875d9b791987
+      summary: Deletes a file from the uploads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the uploads folder or the file content when
+            filename is provided
+      operationId: 1ff35162dd931e970d69b3db621d39fb
+      summary: >-
+        Obtain list of files in the uploads folder, or the content of a specific
+        file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: a54ebcfc4cf517866b3b916d58fd203a
+      summary: Stores given file to the uploads folder.
+  '/web/2.0/procedure/{id}/signature/download-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from signature downloads folder
+      operationId: d61c20842cbfcf7bb25a5648d7effff2
+      summary: Deletes a file from the signature downloads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the signature downloads folder or the file content
+            when filename is provided
+      operationId: 3e95e5d1daf98a542ce2dd678660d6ee
+      summary: >-
+        Obtain list of files in the signature downloads folder, or the content
+        of a specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: 24fcc8572e88a33b154ae07a1d2bd5ad
+      summary: Stores given file to the signature downloads folder.
+  '/web/2.0/procedure/{id}/signature/initialize/{signatureButtonId}':
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: path
+          name: signatureButtonId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Signature initialized
+      operationId: 4139e49af5df9adf70d8bc2b468a2e20
+      summary: Initialize the signature process for given procedure.
+  '/web/2.0/procedure/{id}/signature/upload-folder':
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body with the filename to delete
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                type: string
+            required:
+              - filename
+            type: object
+      responses:
+        '200':
+          description: File deleted from signature uploads folder
+      operationId: 6482642feacb2c9da43abe4285230bb7
+      summary: Deletes a file from the signature uploads folder.
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: query
+          name: filename
+          required: false
+          type: string
+        - description: Optional JSON body to request a specific file content
+          in: body
+          name: body
+          required: false
+          schema:
+            properties:
+              filename:
+                example: document.pdf
+                type: string
+            type: object
+      responses:
+        '200':
+          description: >-
+            List of files in the signature uploads folder or the file content
+            when filename is provided
+      operationId: c78db45d108657cf3923cdc490154dc0
+      summary: >-
+        Obtain list of files in the signature uploads folder, or the content of
+        a specific file if provided.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+              filename:
+                type: string
+            required:
+              - filename
+              - data
+            type: object
+      responses:
+        '200':
+          description: File uploaded
+      operationId: 550c7036d1836ec71efac8c50ac50b79
+      summary: Stores given file to the signature uploads folder.
+  '/web/2.0/procedure/{id}/stakeholder/op/email':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: E-mail sent
+      security:
+        - basicAuth: []
+      operationId: 9796b59d1235b77f8d8c005e67fab6fc
+      summary: Send the e-mail to all stakeholders that belongs to given procedure.
+  '/web/2.0/procedure/{jitsiRoomCode}/videoconference/finished':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              jitsiRoomCode:
+                type: string
+            required:
+              - jitsiRoomCode
+            type: object
+      responses:
+        '200':
+          description: Videoconference finished
+      operationId: 0535bd5fb91d57d457f11eb40a04ee6e
+      summary: Receive notification of finished videoconference.
+  '/web/2.0/procedure/{jitsiRoomCode}/videoconference/started':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              jitsiRoomCode:
+                type: string
+            required:
+              - jitsiRoomCode
+            type: object
+      responses:
+        '200':
+          description: Videoconference started
+      operationId: 05f93999fb075087290fbe19bbd4cdd3
+      summary: Receive notification of started videoconference.
+  '/web/2.0/procedure/{procedureId}/stakeholder':
+    delete:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure stakeholders deleted for given procedure id
+      security:
+        - basicAuth: []
+      operationId: dc4c001d3577ee730c354c8e0c04b68c
+      summary: Delete all procedure stakeholder by given procedure id.
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: >-
+            Obtain all existing procedure stakeholders that belongs to the given
+            procedure
+      security:
+        - basicAuth: []
+      operationId: c3b44837277ffda64c49c8b0aabd90ca
+      summary: >-
+        Obtain all existing procedure stakeholders that belongs to the given
+        procedure.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New procedure stakeholder created
+      security:
+        - basicAuth: []
+      operationId: 9f271d8d52a4577dadad17c90cb4bc6d
+      summary: |-
+        Create a new procedure stakeholder associated to a procedure from the
+        given data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Procedure stakeholder updated
+      security:
+        - basicAuth: []
+      operationId: 064796b5cd58e3c71e440ba6ee9e9398
+      summary: Update procedure stakeholder.
+  '/web/2.0/procedure/{procedureId}/stakeholder/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Procedure stakeholder deleted
+      security:
+        - basicAuth: []
+      operationId: 24af218335c2fb22dcaf3f8f4fdecd2b
+      summary: Delete procedure stakeholder by given id.
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain procedure stakeholder given its identifier
+      security:
+        - basicAuth: []
+      operationId: 1843656c9b7b99aa54231dea33435a7b
+      summary: Obtain procedure stakeholder given its identifier.
+  '/web/2.0/procedure/{procedureId}/stakeholder/{id}/op/email':
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Send the e-mail to given stakeholder that belongs to given procedure
+      security:
+        - basicAuth: []
+      operationId: df08f19a08a5a7451781458db8aefce9
+      summary: Send the e-mail to given stakeholder that belongs to given procedure.
+  '/web/2.0/procedure/{procedureId}/stakeholder/{procedureStakeholderId}/rgpd-activity/last':
+    get:
+      parameters:
+        - in: path
+          name: procedureId
+          required: true
+          type: integer
+        - in: path
+          name: procedureStakeholderId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD activities given its identifier
+      security:
+        - basicAuth: []
+      operationId: be54801e70de4778ff3dc614071a01a8
+      summary: |-
+        Obtain the last activity for a given stakeholder in a procedure. If none
+        is found, a null entity is returned.
+  /web/2.0/rgpd-activity:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing RGPD activities
+      security:
+        - basicAuth: []
+      operationId: 3db3ef8d6ab8d687246d8487e1f4bb6a
+      summary: Obtain all existing RGPD activities.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new RGPD activities from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: ee25937bd70c309e8597567a62f91c21
+      summary: Create a new RGPD activities from the given JSON data.
+  /web/2.0/rgpd-activity/:
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update RGPD activities related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: d7f992d39bc61088749e24937fbb3f0e
+      summary: Update RGPD activities related to the given JSON data.
+  '/web/2.0/rgpd-activity/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete RGPD activities by given id
+      security:
+        - basicAuth: []
+      operationId: e0c998288e65c7c4dfa36eeaac7de322
+      summary: Delete RGPD activities by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD activities given its identifier
+      security:
+        - basicAuth: []
+      operationId: c4b0705c9cf408cd62ee191b49fc076f
+      summary: Obtain RGPD activities given its identifier.
+  /web/2.0/rgpd-option:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing RGPD options
+      security:
+        - basicAuth: []
+      operationId: 31986038854827c0344c2bfce3a59024
+      summary: Obtain all existing RGPD options.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new RGPD options from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: cb1988a98fd1cd9f63389b233c81b9c7
+      summary: Create a new RGPD options from the given JSON data.
+  /web/2.0/rgpd-option/:
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update RGPD options related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: c6b477442e3bf5f54e7bbfc3c4bda82e
+      summary: Update RGPD options related to the given JSON data.
+  '/web/2.0/rgpd-option/jitsiRoomCode/{jitsiRoomCode}':
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: RGPD options for the Jitsi room session
+      security:
+        - basicAuth: []
+      operationId: 10ec167eb3326b4f6cdb6fae8e95aca2
+      summary: Obtain RGPD options for the given Jitsi room session.
+  '/web/2.0/rgpd-option/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete RGPD options by given id
+      security:
+        - basicAuth: []
+      operationId: 1755961fb005659fc4bee2922cdcfb49
+      summary: Delete RGPD options by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain RGPD options given its identifier
+      security:
+        - basicAuth: []
+      operationId: d47cd3f847d8ab8d837c516b874151a0
+      summary: Obtain RGPD options given its identifier.
+  /web/2.0/signature-buttons:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing signature types
+      security:
+        - basicAuth: []
+      operationId: 9ad86bb3fa34541402aadf472ae12192
+      summary: Obtain all existing signature types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new signature button from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 660e05a7442aa7e71cd190bb23ec41e6
+      summary: Create a new signature type from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update signature button related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: da1f5fbc54fca0689200c6ba66f5697c
+      summary: Update signature type related to the given JSON data.
+  '/web/2.0/signature-buttons/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete signature button by given id
+      security:
+        - basicAuth: []
+      operationId: 50fe72a4a0278889bb3014ea7ef58934
+      summary: Delete signature type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain signature button given its identifier
+      security:
+        - basicAuth: []
+      operationId: 98c32303953af7953d7194878d20c2b2
+      summary: Obtain signature type given its identifier.
+  /web/2.0/signature-type:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing signature types
+      security:
+        - basicAuth: []
+      operationId: acf047c157a78122d6b796c59d2db802
+      summary: Obtain all existing signature types.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new signature type from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: b2aad1b7bc08f55826b204be8c961c41
+      summary: Create a new signature type from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update signature type related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 82e80e58c1b4a3800630b12300ecaaaa
+      summary: Update signature type related to the given JSON data.
+  '/web/2.0/signature-type/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete signature type by given id
+      security:
+        - basicAuth: []
+      operationId: 88c744fad5b7aa09f5bf3978f32b6bf5
+      summary: Delete signature type by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain signature type given its identifier
+      security:
+        - basicAuth: []
+      operationId: 33979ca2521b523be04c1a75a8d59dce
+      summary: Obtain signature type given its identifier.
+  /web/2.0/signature/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Signatures found with given filter
+      security:
+        - basicAuth: []
+      operationId: 60cc60d3210ca067f8da0e931caf1ee5
+      summary: Get filtered signatures.
+  '/web/2.0/signature/info/{hash}':
+    get:
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Get information related to given hash
+      security:
+        - basicAuth: []
+      operationId: c4bebf52723dca4ca744ae222bdbcd21
+      summary: Get information related to given hash
+  '/web/2.0/signature/pendingfiles/{jitsiRoomCode}':
+    post:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+      responses:
+        '200':
+          description: List of pending files to be signed
+      security:
+        - basicAuth: []
+      operationId: fd46555b3aa918e20fcec43bec1f277a
+      summary: Get the list of pending files to be signed
+  '/web/2.0/signature/uploadcompleted/{hash}':
+    post:
+      parameters:
+        - in: path
+          name: hash
+          required: true
+          type: string
+      responses:
+        '200':
+          description: >-
+            Notification about upload is completed for files related to given
+            hash
+      security:
+        - basicAuth: []
+      operationId: 42702596433d93c8c30f55013afebb4f
+      summary: Notification about upload is completed for files related to given hash
+  '/web/2.0/signature/{id}/file/{fileId}/cancel':
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: path
+          name: fileId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Signature file cancelled
+      security:
+        - basicAuth: []
+      operationId: f807e7b433b6fbe4e5d334ff2337fb39
+      summary: Cancel a specific file within a signature (staff endpoint).
+  /web/2.0/topic:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing topics
+      security:
+        - basicAuth: []
+      operationId: 582986dbb741c12395ee379813c2c02f
+      summary: Obtain all existing topics.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new topic from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: efdbfe45a901ac7c0c0adb5c373b3aab
+      summary: Create a new topic from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update topic related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 7dfa28ed65e04d62622428e0d0a0f7ce
+      summary: Update topic related to the given JSON data.
+  /web/2.0/topic/search/filter:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              filter:
+                type: string
+            required:
+              - filter
+            type: object
+      responses:
+        '200':
+          description: Topics found with given filter
+      security:
+        - basicAuth: []
+      operationId: 65e62144a6bd0988a899b4fdd0c3e739
+      summary: Get filtered topics.
+  '/web/2.0/topic/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete topic by given id
+      security:
+        - basicAuth: []
+      operationId: a99ba53042798dbe6e786d039d94c3ee
+      summary: Delete topic by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain topic given its identifier
+      security:
+        - basicAuth: []
+      operationId: b820d0190a05003a04ab4ed595684f27
+      summary: Obtain topic given its identifier.
+  '/web/2.0/videoconference/{jitsiRoomCode}/command':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                additionalProperties: true
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New command added to the queue
+      security:
+        - basicAuth: []
+      operationId: 85e8f7e31442f67cbacaecd1bc0d70c2
+      summary: Add a new command to the queue from the given JSON data.
+  '/web/2.0/videoconference/{jitsiRoomCode}/command/next':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Next command in the queue or null when empty
+          schema: {}
+      security:
+        - basicAuth: []
+      operationId: 9d610cc7239ae26e0b6b6c3d236dcf2b
+      summary: >-
+        Obtain next command to be sent in queue. In case of no more commands, it
+        return a null entity.
+  '/web/2.0/videoconference/{jitsiRoomCode}/command/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Command successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: 9cd663d713da6677a3dfd95999291742
+      summary: Delete command from queue by given id.
+  '/web/2.0/videoconference/{jitsiRoomCode}/message/{channel}':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                additionalProperties: true
+                type: object
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: New message added to the queue
+      security:
+        - basicAuth: []
+      operationId: efcdcaa15e6dcb4dd664b254be72e2f1
+      summary: Add a new message to the queue from the given JSON data.
+  '/web/2.0/videoconference/{jitsiRoomCode}/message/{channel}/next':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Next message in the queue or null when empty
+          schema: {}
+      security:
+        - basicAuth: []
+      operationId: dea211fdc947a5ad1f4ffdd3c6cca87f
+      summary: >-
+        Obtain next message to be sent in queue. In case of no more messages, it
+        return a null entity.
+  '/web/2.0/videoconference/{jitsiRoomCode}/message/{channel}/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: jitsiRoomCode
+          required: true
+          type: string
+        - in: path
+          name: channel
+          required: true
+          type: string
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Message successfully deleted from the queue
+      security:
+        - basicAuth: []
+      operationId: 5881f2944e283b78e6421ffe9f54c670
+      summary: Delete message from queue by given id.
+  /web/2.0/webhook:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Obtain all existing webhooks
+      security:
+        - basicAuth: []
+      operationId: 8614533b5acb2ac554ca8bfbfd0f76c9
+      summary: Obtain all existing webhooks.
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Create a new webhook from the given JSON data
+      security:
+        - basicAuth: []
+      operationId: fa760975dd118375b467cd4952515567
+      summary: Create a new webhook from the given JSON data.
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              data:
+                type: string
+            required:
+              - data
+            type: object
+      responses:
+        '200':
+          description: Update webhook related to the given JSON data
+      security:
+        - basicAuth: []
+      operationId: 6bb7b83dbd170f68aeb59f9398ff6f84
+      summary: Update webhook related to the given JSON data.
+  '/web/2.0/webhook/{id}':
+    delete:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Delete webhook by given id
+      security:
+        - basicAuth: []
+      operationId: 57b83a63fe5848253baca446429d2756
+      summary: Delete webhook by given id.
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Obtain webhook given its identifier
+      security:
+        - basicAuth: []
+      operationId: dadd7854490c7fab3657cd8dd2491dcd
+      summary: Obtain webhook given its identifier.
+definitions:
+  MailQueue:
+    description: Specify data which should be serialized to JSON
+    properties:
+      body:
+        type: string
+      citizenPassword:
+        type: string
+      id:
+        format: int32
+        type: integer
+      mailCc:
+        type: string
+      mailCco:
+        type: string
+      mailTo:
+        type: string
+      procedureId:
+        type: string
+      subject:
+        type: string
+    title: Mail queue model
+    type: object
+  MailTemplate:
+    description: Specify data which should be serialized to JSON
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      subject:
+        type: string
+      template:
+        type: string
+    title: Mail template model
+    type: object
+  MessageQueue:
+    description: Specify data which should be serialized to JSON
+    properties:
+      body:
+        type: string
+      channel:
+        type: string
+      citizenPassword:
+        type: string
+      id:
+        format: int32
+        type: integer
+      procedureId:
+        type: string
+      procedureStakeholderId:
+        type: string
+      recipient:
+        type: string
+      subject:
+        type: string
+    title: Message queue model
+    type: object
+  MessageTemplate:
+    description: Specify data which should be serialized to JSON
+    properties:
+      channel:
+        type: string
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      subject:
+        type: string
+      template:
+        type: string
+    title: Mail template model
+    type: object
+  Procedure:
+    description: Specify data which should be serialized to JSON
+    properties:
+      appointmentDate:
+        format: date-time
+        type: string
+      assignedGroupId:
+        type: string
+      assignedUserId:
+        type: string
+      attendanceChannel:
+        format: int32
+        type: integer
+      comments:
+        type: string
+      deadlineDate:
+        format: date-time
+        type: string
+      downloadsQty:
+        format: int32
+        type: integer
+      externalId:
+        type: string
+      foldersOwner:
+        type: string
+      fullJitsiRoomStaffUrl:
+        type: string
+      id:
+        format: int32
+        type: integer
+      jitsiRoomCode:
+        type: string
+      jitsiRoomStaffUrl:
+        type: string
+      modificationDate:
+        format: date-time
+        type: string
+      modificationUser:
+        type: string
+      procedureTypeId:
+        format: int32
+        type: integer
+      staffDownloadsUrl:
+        type: string
+      staffPortalUrl:
+        type: string
+      staffSignatureDownloadsUrl:
+        type: string
+      staffSignatureUploadsUrl:
+        type: string
+      staffUploadsUrl:
+        type: string
+      statusDate:
+        format: date-time
+        type: string
+      statusId:
+        format: int32
+        type: integer
+      topic:
+        type: string
+      uploadsQty:
+        format: int32
+        type: integer
+    title: Procedure model
+    type: object
+  ProcedureStakeholder:
+    description: Specify data which should be serialized to JSON
+    properties:
+      attendanceChannel:
+        format: int32
+        type: integer
+      deadlineDate:
+        format: date-time
+        type: string
+      deckCardId:
+        type: string
+      email:
+        type: string
+      entryPage:
+        type: string
+      entryPassword:
+        type: string
+      fullJitsiRoomStakeholderUrl:
+        type: string
+      id:
+        format: int32
+        type: integer
+      isMain:
+        type: boolean
+      jitsiRoomStakeholderUrl:
+        type: string
+      name:
+        type: string
+      personalId:
+        type: string
+      phone:
+        type: string
+      procedureId:
+        format: int32
+        type: integer
+      stakeholderDownloadsUrl:
+        type: string
+      stakeholderUploadsUrl:
+        type: string
+    title: Procedure stakeholder model
+    type: object
+  ProcedureType:
+    description: Specify data which should be serialized to JSON
+    properties:
+      allowDownload:
+        type: boolean
+      allowSignature:
+        type: boolean
+      allowUpload:
+        type: boolean
+      allowVideo:
+        type: boolean
+      allowedAttendanceChannels:
+        items:
+          type: string
+        type: array
+      attendantPortalProperties:
+        type: string
+      deckBoard:
+        format: int32
+        type: integer
+      deckIntegration:
+        type: boolean
+      deckStack:
+        format: int32
+        type: integer
+      downloadsFolder:
+        type: string
+      filesDeletionPeriod:
+        format: int32
+        type: integer
+      id:
+        format: int32
+        type: integer
+      jitsiStaffJwtPayload:
+        type: string
+      jitsiStaffJwtSecret:
+        type: string
+      jitsiStaffUrl:
+        type: string
+      jitsiStakeholderJwtPayload:
+        type: string
+      jitsiStakeholderJwtSecret:
+        type: string
+      jitsiStakeholderUrl:
+        type: string
+      name:
+        type: string
+      notifyStaff:
+        type: boolean
+      notifyStakeholder:
+        type: boolean
+      procedureAnonymizationPeriod:
+        format: int32
+        type: integer
+      procedureDeletionPeriod:
+        format: int32
+        type: integer
+      requireAppointmentDate:
+        type: boolean
+      requireAssignedGroup:
+        type: boolean
+      requireAttendanceChannel:
+        type: boolean
+      requireDeadlineDate:
+        type: boolean
+      requireExternalId:
+        type: boolean
+      requireStakeholderEmail:
+        type: boolean
+      requireStakeholderPhone:
+        type: boolean
+      requireStakeholderPid:
+        type: boolean
+      rgpdOptions:
+        items:
+          type: string
+        type: array
+      signatureDownloadsFolder:
+        type: string
+      signatureLimit:
+        format: int32
+        type: integer
+      signatureTimeframeDownload:
+        type: int32
+      signatureTimeframeSign:
+        type: int32
+      signatureUploadsFolder:
+        type: string
+      uploadsFolder:
+        type: string
+    title: Procedure type model
+    type: object
+  ProcedureTypeGroup:
+    description: Specify data which should be serialized to JSON
+    properties:
+      allowAssignGroup:
+        type: boolean
+      allowAssignUser:
+        type: boolean
+      allowCreate:
+        type: boolean
+      bypassRequired:
+        type: boolean
+      group:
+        type: string
+      id:
+        format: int32
+        type: integer
+      notifyStaffTemplate:
+        items:
+          type: string
+        type: array
+      notifyStaffTemplateId:
+        format: int32
+        type: integer
+      notifyStakeholderTemplate:
+        items:
+          type: string
+        type: array
+      notifyStakeholderTemplateId:
+        format: int32
+        type: integer
+      procedureTypeId:
+        format: int32
+        type: integer
+      vcConfirmationForm:
+        type: string
+    title: Procedure type group model
+    type: object
+  ProcedureTypeStatus:
+    description: Specify data which should be serialized to JSON
+    properties:
+      allowDownload:
+        type: boolean
+      allowSignature:
+        type: boolean
+      allowUpload:
+        type: boolean
+      allowVideo:
+        type: boolean
+      filesDeletionPeriod:
+        format: int32
+        type: integer
+      id:
+        format: int32
+        type: integer
+      isFinalStatus:
+        type: boolean
+      isInitialStatus:
+        type: boolean
+      nextStatus:
+        type: string
+      notifyStaff:
+        type: boolean
+      notifyStakeholder:
+        type: boolean
+      procedureAnonymizationPeriod:
+        format: int32
+        type: integer
+      procedureDeletionPeriod:
+        format: int32
+        type: integer
+      procedureTypeId:
+        format: int32
+        type: integer
+      statusName:
+        type: string
+    title: Procedure type status model
+    type: object
+  ProcedureTypeStatusGroup:
+    description: Specify data which should be serialized to JSON
+    properties:
+      id:
+        format: int32
+        type: integer
+      notifyStaffTemplateId:
+        format: int32
+        type: integer
+      notifyStakeholderTemplateId:
+        format: int32
+        type: integer
+      procedureTypeGroupId:
+        format: int32
+        type: integer
+      procedureTypeStatusId:
+        format: int32
+        type: integer
+      vcConfirmationForm:
+        type: string
+    title: Model of procedure type configuration by status and group
+    type: object
+  RgpdActivity:
+    description: Specify data which should be serialized to JSON
+    properties:
+      date:
+        format: date-time
+        type: string
+      id:
+        format: int32
+        type: integer
+      ip:
+        type: string
+      labelList:
+        type: string
+      optionList:
+        type: string
+      procedureId:
+        format: int32
+        type: integer
+      procedureStakeholderId:
+        format: int32
+        type: integer
+      userAgent:
+        type: string
+    title: RGPD activity model
+    type: object
+  RgpdOption:
+    description: Specify data which should be serialized to JSON
+    properties:
+      id:
+        format: int32
+        type: integer
+      label:
+        type: string
+      name:
+        type: string
+      required:
+        type: boolean
+      type:
+        type: string
+    title: RGPD option model
+    type: object
+  SignatureButton:
+    description: Specify data which should be serialized to JSON
+    properties:
+      group:
+        type: string
+      id:
+        format: int32
+        type: integer
+      label:
+        type: string
+      mailEnabled:
+        type: boolean
+      mailTemplateId:
+        format: int32
+        type: integer
+      messageEnabled:
+        type: boolean
+      messageTemplateId:
+        format: int32
+        type: integer
+      procedureTypeId:
+        format: int32
+        type: integer
+      signatureTypeId:
+        format: int32
+        type: integer
+    title: Signature Button model
+    type: object
+  SignatureType:
+    description: Specify data which should be serialized to JSON
+    properties:
+      additionalInfo:
+        type: string
+      certifiedAuthority:
+        type: string
+      certifiedAuthorityProxy:
+        type: string
+      fileType:
+        items:
+          type: string
+        type: array
+      filesPerRequest:
+        format: int32
+        type: integer
+      format:
+        type: string
+      id:
+        format: int32
+        type: integer
+      method:
+        type: string
+      name:
+        type: string
+      phoneRequired:
+        type: boolean
+      requestLimit:
+        format: int32
+        type: integer
+    title: Signature Type model
+    type: object
+  Topic:
+    description: Specify data which should be serialized to JSON
+    properties:
+      help_url:
+        type: string
+      id:
+        format: int32
+        type: integer
+      min_required_docs:
+        format: int32
+        type: integer
+      name:
+        type: string
+      target:
+        type: string
+      video_preservation_time:
+        format: int32
+        type: integer
+    title: Topic model
+    type: object
+  Webhook:
+    description: Specify data which should be serialized to JSON
+    properties:
+      auth_type:
+        type: string
+      auth_type_data:
+        items:
+          type: string
+        type: array
+      endpoint:
+        type: string
+      event:
+        items:
+          type: string
+        type: array
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+    title: Webhook model
+    type: object
+securityDefinitions:
+  basicAuth:
+    type: basic
+x-components: {}
+

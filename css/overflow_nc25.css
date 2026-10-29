@@ -1,0 +1,8 @@
+/* Copyright (C) 2020-2026 VIDEOATENCION */
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+.app-appvtramitprocedures,
+.app-appvtramitprocedures main,
+.app-appvtramitprocedures main > div,
+.app-appvtramitprocedures main > div > div + div {
+  height: 100% !important;
+}

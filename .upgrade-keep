@@ -1,0 +1,24 @@
+# Files preserved across upgrades (rsync --exclude-from syntax).
+# Edit this file to add anything customised for this client.
+# Patterns are relative to the vtramit/ install directory.
+#
+# vtramit-update will:
+#   1. NOT overwrite files matching these patterns
+#   2. NOT delete files matching these patterns even if removed upstream
+#
+# After editing, run "sudo vtramit-update --check" to preview behavior.
+
+# This file itself — so client edits survive upgrades.
+.upgrade-keep
+
+# Per-tenant CSP / header customisation (loaded by Nextcloud at runtime).
+templates/publicPortal-headers.php
+
+# Local branding overrides — uncomment / adjust as needed.
+#img/logo.svg
+#img/logo-*.png
+#img/favicon.ico
+#css/branding.css
+#css/branding-*.css
+
+# Anything you have manually patched should be listed here.

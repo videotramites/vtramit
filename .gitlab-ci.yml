@@ -1,0 +1,113 @@
+# Copyright (C) 2020-2026 VIDEOATENCION
+# SPDX-License-Identifier: AGPL-3.0-or-later
+stages:
+  - build
+  - publish
+
+variables:
+  PACKAGE_NAME: vtramit
+  GIT_DEPTH: "10"
+
+build:
+  stage: build
+  image: node:20-bookworm
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends php-cli php-xml php-mbstring php-curl php-zip unzip rsync ca-certificates
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  script:
+    - VERSION=$(php -r 'echo (string)simplexml_load_file("appinfo/info.xml")->version;')
+    - echo "Building vtramit ${VERSION} (commit ${CI_COMMIT_SHORT_SHA}, tag ${CI_COMMIT_TAG:-none})"
+    - 'if [ -n "${CI_COMMIT_TAG:-}" ] && [ "${CI_COMMIT_TAG#v}" != "${VERSION}" ]; then echo "ERROR: tag ${CI_COMMIT_TAG} does not match appinfo version ${VERSION}"; exit 1; fi'
+    - composer install --no-dev --prefer-dist --no-interaction --no-progress
+    - |
+      for d in admin publicPortal attendantPortal proceduresView; do
+        echo "=== Building vue/$d ==="
+        (cd "vue/$d" && npm ci --no-audit --no-fund && npm run build)
+      done
+    - mkdir -p dist
+    - rsync -a --exclude='dist' --exclude-from=.gitlab/release-exclude.txt ./ dist/vtramit/
+    - chmod +x dist/vtramit/vtramit-update
+    - |
+      cd dist/vtramit
+      LC_ALL=C find . -type f ! -name MANIFEST.txt -print0 \
+        | LC_ALL=C sort -z \
+        | xargs -0 sha256sum \
+        | sed 's| \./| |' > MANIFEST.txt
+      cd ../..
+    - tar czf "vtramit-${VERSION}.tar.gz" -C dist vtramit
+    - sha256sum "vtramit-${VERSION}.tar.gz" > "vtramit-${VERSION}.tar.gz.sha256"
+    - 'echo "VERSION=${VERSION}" > build.env'
+    - ls -lh vtramit-*.tar.gz*
+    - cat "vtramit-${VERSION}.tar.gz.sha256"
+  artifacts:
+    name: "vtramit-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - vtramit-*.tar.gz
+      - vtramit-*.tar.gz.sha256
+    reports:
+      dotenv: build.env
+    expire_in: 30 days
+
+upload:
+  stage: publish
+  image: curlimages/curl:8.10.1
+  needs:
+    - job: build
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      set -eu
+      BASE="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}"
+      curl --fail --silent --show-error \
+        --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        --upload-file "vtramit-${VERSION}.tar.gz" \
+        "${BASE}/vtramit-${VERSION}.tar.gz"
+      curl --fail --silent --show-error \
+        --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        --upload-file "vtramit-${VERSION}.tar.gz.sha256" \
+        "${BASE}/vtramit-${VERSION}.tar.gz.sha256"
+      echo "Uploaded to ${BASE}/"
+
+release:
+  stage: publish
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: build
+      artifacts: true
+    - job: upload
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      echo "Releasing ${CI_COMMIT_TAG} (vtramit ${VERSION})"
+      echo
+      echo "Latest tarball will be available at:"
+      echo "  ${CI_PROJECT_URL}/-/releases/permalink/latest/downloads/binaries/vtramit.tar.gz"
+      echo "This specific version at:"
+      echo "  ${CI_PROJECT_URL}/-/releases/${CI_COMMIT_TAG}/downloads/binaries/vtramit.tar.gz"
+  release:
+    name: "vtramit ${VERSION}"
+    tag_name: ${CI_COMMIT_TAG}
+    description: |
+      Automated release of vtramit **${VERSION}**.
+
+      ## Install / Upgrade
+      Run on the Nextcloud host:
+      ```sh
+      sudo /var/www/nextcloud/apps/vtramit/vtramit-update           # latest
+      sudo /var/www/nextcloud/apps/vtramit/vtramit-update ${CI_COMMIT_TAG}   # this version
+      ```
+      See README.md inside the tarball for first-time install.
+    assets:
+      links:
+        - name: "vtramit-${VERSION}.tar.gz"
+          url: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/vtramit-${VERSION}.tar.gz"
+          filepath: "/binaries/vtramit.tar.gz"
+          link_type: package
+        - name: "vtramit-${VERSION}.tar.gz.sha256"
+          url: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/vtramit-${VERSION}.tar.gz.sha256"
+          filepath: "/binaries/vtramit.tar.gz.sha256"
+          link_type: other
